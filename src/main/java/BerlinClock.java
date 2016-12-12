@@ -1,4 +1,7 @@
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 
 public class BerlinClock {
     /*********************************************************************************
@@ -23,14 +26,14 @@ public class BerlinClock {
     private static final String RED_CHAR = "R";
     private static final String YELLOW_CHAR = "Y";
     private static final String OFF_CHAR = "O";
+    private static final String NEW_LINE = "\n";
 
     //private static final String RED_CHAR = "\033[31;5;7mR\033[0m";
     //private static final String YELLOW_CHAR = "\033[33;5;7mY\033[0m";
     //private static final String OFF_CHAR = " ";
 
 
-    public BerlinClock() {
-    }
+    public BerlinClock() {}
 
     public BerlinClock(String currentTime) {
         /*********************************************************************************
@@ -38,11 +41,16 @@ public class BerlinClock {
          *********************************************************************************/
 
         try {
-            setCurrentTime(currentTime);
-            setBerlinClock();
+            if ( currentTime.equals("") ) {
+                defaultTime();
+            } else {
+                setCurrentTime(currentTime);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {}
+
+        calculateBerlinClock();
     }
 
     public String getCurrentTime() {
@@ -88,7 +96,23 @@ public class BerlinClock {
 
     }
 
-    public void setBerlinClock() {
+    public void defaultTime() {
+        /*********************************************************************************
+         * Set the current time, defaulting to the current time.
+         *********************************************************************************/
+
+        try {
+            DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            Calendar cal1 = Calendar.getInstance();
+            setCurrentTime(sdf.format(cal1.getTime()));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {}
+
+    }
+
+
+    public void calculateBerlinClock() {
         /*********************************************************************************
          * Set indicators corresponding to all the bulbs that must be lit for the time.
          *********************************************************************************/
@@ -135,18 +159,19 @@ public class BerlinClock {
          * Display the Berlin Clock.
          *********************************************************************************/
 
-        displaySecond();
-        displayFourBoxes(Boolean.TRUE,ind5HrIntervals);
-        displayFourBoxes(Boolean.TRUE,ind1HrIntervals);
-        displayElevenBoxes(ind5MinIntervals);
-        displayFourBoxes(Boolean.FALSE,ind1MinIntervals);
+        System.out.println(formatSecondBox());
+        System.out.println(formatFourBoxes(Boolean.TRUE,ind5HrIntervals));
+        System.out.println(formatFourBoxes(Boolean.TRUE,ind1HrIntervals));
+        System.out.println(formatElevenBoxes(ind5MinIntervals));
+        System.out.println(formatFourBoxes(Boolean.FALSE,ind1MinIntervals));
     }
 
-    public void displaySecond() {
+    public String formatSecondBox() {
         /*********************************************************************************
-         * Display the image for the second.
+         * Format the image for the second.
          *********************************************************************************/
 
+        // Set the output character.
         String displayChar;
         if (indSecondInterval) {
             displayChar = YELLOW_CHAR;
@@ -154,19 +179,25 @@ public class BerlinClock {
             displayChar = OFF_CHAR;
         }
 
-        System.out.println("                 * *");
-        System.out.println("               *     *");
-        System.out.println("             *    "+displayChar+"    *");
-        System.out.println("               *     *");
-        System.out.println("                 * *");
+        // Format the output to a string.
+        String outputLines = "";
+        outputLines = outputLines.concat("                 * *" + NEW_LINE);
+        outputLines = outputLines.concat("               *     *" + NEW_LINE);
+        outputLines = outputLines.concat("             *    "+displayChar+"    *" + NEW_LINE);
+        outputLines = outputLines.concat("               *     *" + NEW_LINE);
+        outputLines = outputLines.concat("                 * *");
+
+        return outputLines;
     }
 
-    public void displayFourBoxes(boolean hourIndicator, boolean [] args) {
+    public String formatFourBoxes(boolean hourIndicator, boolean [] args) {
         /*********************************************************************************
-         * Display the image for either the Hour or Minutes where 4 boxes are required.
+         * Format the image for either the Hour or Minutes where 4 boxes are required.
          * The purpose is provided in the parameters.
          *********************************************************************************/
 
+        // Create an array of string that will be displayed, based upon the ON/OFF status
+        // and positioning.
         String [] displayChar = new String[args.length];
 
         for (int x = 0; x < args.length ; x++) {
@@ -181,17 +212,24 @@ public class BerlinClock {
             }
         }
 
-        System.out.println("╔═══════╗╔═══════╗╔═══════╗╔═══════╗");
-        for ( String x : displayChar ) { System.out.print("║   "+x+"   ║"); }
-        System.out.println("\n╚═══════╝╚═══════╝╚═══════╝╚═══════╝");
+        // Format the output to a string.
+        String outputLines = "";
+        outputLines = outputLines.concat("╔═══════╗╔═══════╗╔═══════╗╔═══════╗" + NEW_LINE);
+        for ( String x : displayChar ) {
+            outputLines = outputLines.concat("║   "+x+"   ║");
+        }
+        outputLines = outputLines.concat(NEW_LINE + "╚═══════╝╚═══════╝╚═══════╝╚═══════╝");
 
+        return outputLines;
     }
 
-    public void displayElevenBoxes(boolean [] args) {
+    public String formatElevenBoxes(boolean [] args) {
         /*********************************************************************************
-         * Display the image for the 5 minute intervals where eleven boxes are required.
+         * Format the image for the 5 minute intervals where eleven boxes are required.
          *********************************************************************************/
 
+        // Create an array of string that will be displayed, based upon the ON/OFF status
+        // and positioning.
         String [] displayChar = new String [args.length];
 
         int y = 0;
@@ -208,20 +246,24 @@ public class BerlinClock {
             }
         }
 
-        System.out.println("╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗");
+        // Format the output to a string.
+        String outputLines = "";
+        outputLines = outputLines.concat("╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗" + NEW_LINE);
 
         y = 0;
         for ( String x : displayChar ) {
             y++;
-            System.out.print("║"+x+"║");
-            if (y==3 | y==6 | y==9) { System.out.print(" ");}
+            outputLines = outputLines.concat("║"+x+"║");
+            if (y==3 | y==6 | y==9) {
+                outputLines = outputLines.concat(" ");
+            }
         }
 
-        System.out.println("\n╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝");
+        outputLines = outputLines.concat(NEW_LINE + "╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝");
 
+        return outputLines;
     }
 
-    @Override
     public String toString() {
         /*********************************************************************************
          * Show all the values.
@@ -232,11 +274,13 @@ public class BerlinClock {
                 ", inHours=" + inHours +
                 ", inMinutes=" + inMinutes +
                 ", inSeconds=" + inSeconds +
-                "\n, BulbSecondInterval=" + indSecondInterval +
-                "\n, ind5HrIntervals=" + Arrays.toString(ind5HrIntervals) +
-                "\n, ind1HrIntervals=" + Arrays.toString(ind1HrIntervals) +
-                "\n, ind5MinIntervals=" + Arrays.toString(ind5MinIntervals) +
-                "\n, ind1MinIntervals=" + Arrays.toString(ind1MinIntervals) +
-                '}';
+                '}' + NEW_LINE +
+                "indSecondInterval=" + indSecondInterval + NEW_LINE +
+                "ind5HrIntervals=" + Arrays.toString(ind5HrIntervals) + NEW_LINE +
+                "ind1HrIntervals=" + Arrays.toString(ind1HrIntervals) + NEW_LINE +
+                "ind5MinIntervals=" + Arrays.toString(ind5MinIntervals) + NEW_LINE +
+                "ind1MinIntervals=" + Arrays.toString(ind1MinIntervals);
+
     }
+
 }

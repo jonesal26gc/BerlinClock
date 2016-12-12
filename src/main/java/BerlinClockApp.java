@@ -18,12 +18,10 @@ public class BerlinClockApp {
 
         BerlinClock b = new BerlinClock();
 
+        // If the parameters have not provided a time string, then use the current time.
         try {
-            // If the parameters have not provided a time string, then use the current time.
-            if (args[0].equals("")) {
-                DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-                Calendar cal1 = Calendar.getInstance();
-                b.setCurrentTime(sdf.format(cal1.getTime()));
+            if (args.length == 0) {
+                b.defaultTime();
             } else {
                 b.setCurrentTime(args[0]);
             }
@@ -35,13 +33,8 @@ public class BerlinClockApp {
         System.out.println(b.toString());
 
         // Format and display the clock.
-        b.setBerlinClock();
+        b.calculateBerlinClock();
         b.displayBerlinClock();
-
-        BerlinClock b2 = new BerlinClock("00:00:01");
-        System.out.println(b2.toString());
-
-
 
     }
 }
