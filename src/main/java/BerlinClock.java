@@ -8,7 +8,7 @@ public class BerlinClock {
      * Display the time in the Berlin Clock format.
      *********************************************************************************/
 
-    String currentTime;
+    String parameterTime;
 
     // Values derived from the input time string.
     private int inHours;
@@ -35,26 +35,26 @@ public class BerlinClock {
 
     public BerlinClock() {}
 
-    public BerlinClock(String currentTime) {
+    public BerlinClock(String parameterTime) {
         /*********************************************************************************
          * This constructor sets the time and the clock.
          *********************************************************************************/
 
         try {
-            if ( currentTime.equals("") ) {
+            if ( parameterTime.equals("") ) {
                 defaultTime();
             } else {
-                setCurrentTime(currentTime);
+                setParameterTime(parameterTime);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {}
 
-        calculateBerlinClock();
+        calculateIndicators();
     }
 
-    public String getCurrentTime() {
-        return currentTime;
+    public String getParameterTime() {
+        return parameterTime;
     }
 
     public boolean getIndSecondInterval() {
@@ -77,19 +77,19 @@ public class BerlinClock {
         return ind1MinIntervals;
     }
 
-    public void setCurrentTime(String currentTime) throws Exception {
+    public void setParameterTime(String parameterTime) throws Exception {
         /*********************************************************************************
          * Set the current time, ensuring that it's valid.
          *********************************************************************************/
         Time24hFormatValidator time24hFormatValidator = new Time24hFormatValidator();
-        if ( time24hFormatValidator.validate(currentTime) ) {
+        if ( time24hFormatValidator.validate(parameterTime) ) {
             // set the current times.
-            this.currentTime = currentTime;
+            this.parameterTime = parameterTime;
 
             // Derive the other attributes from this time.
-            this.inHours = Integer.parseInt(currentTime.substring(0,2));
-            this.inMinutes = Integer.parseInt(currentTime.substring(3,5));
-            this.inSeconds = Integer.parseInt(currentTime.substring(6,8));
+            this.inHours = Integer.parseInt(parameterTime.substring(0,2));
+            this.inMinutes = Integer.parseInt(parameterTime.substring(3,5));
+            this.inSeconds = Integer.parseInt(parameterTime.substring(6,8));
         } else {
             throw new Exception("Invalid time provided an input parameter.");
         }
@@ -104,15 +104,14 @@ public class BerlinClock {
         try {
             DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
             Calendar cal1 = Calendar.getInstance();
-            setCurrentTime(sdf.format(cal1.getTime()));
+            setParameterTime(sdf.format(cal1.getTime()));
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {}
 
     }
 
-
-    public void calculateBerlinClock() {
+    public void calculateIndicators() {
         /*********************************************************************************
          * Set indicators corresponding to all the bulbs that must be lit for the time.
          *********************************************************************************/
@@ -154,7 +153,7 @@ public class BerlinClock {
 
     }
 
-    public void displayBerlinClock() {
+    public void display() {
         /*********************************************************************************
          * Display the Berlin Clock.
          *********************************************************************************/
@@ -270,7 +269,7 @@ public class BerlinClock {
          *********************************************************************************/
 
         return "BerlinClock{" +
-                "currentTime='" + currentTime + '\'' +
+                "parameterTime='" + parameterTime + '\'' +
                 ", inHours=" + inHours +
                 ", inMinutes=" + inMinutes +
                 ", inSeconds=" + inSeconds +

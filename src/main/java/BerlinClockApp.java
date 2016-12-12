@@ -1,14 +1,4 @@
-import org.junit.runners.JUnit4;
 
-import javax.swing.*;
-import java.awt.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
-/**
- * Created by xm39 on 09/12/2016.
- */
 public class BerlinClockApp {
 
     public static void main(String[] args) {
@@ -23,7 +13,7 @@ public class BerlinClockApp {
             if (args.length == 0) {
                 b.defaultTime();
             } else {
-                b.setCurrentTime(args[0]);
+                b.setParameterTime(args[0]);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -33,8 +23,8 @@ public class BerlinClockApp {
         System.out.println(b.toString());
 
         // Format and display the clock.
-        b.calculateBerlinClock();
-        b.displayBerlinClock();
+        b.calculateIndicators();
+        b.display();
 
     }
 }
