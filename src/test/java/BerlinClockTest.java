@@ -89,6 +89,27 @@ public class BerlinClockTest {
                 ,b.getInd1MinIntervals());
     }
 
+    @Test
+    public void should_show_123200() {
+        BerlinClock b = new BerlinClock("12:32:00");
+        System.out.println(b.toString());
+        assertEquals("Incorrect","12:32:00",b.getCurrentTime());
+        assertEquals("Second should be on", Boolean.TRUE, b.getIndSecondInterval());
+        assertArrayEquals("First/second 5hr should be true"
+                ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.FALSE,Boolean.FALSE}
+                ,b.getInd5HrIntervals());
+        assertArrayEquals("First/second 1hr should be true"
+                ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.FALSE,Boolean.FALSE}
+                ,b.getInd1HrIntervals());
+        assertArrayEquals("Six 5min should be true"
+                ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE
+                        ,Boolean.TRUE,Boolean.TRUE,Boolean.FALSE,Boolean.FALSE
+                        ,Boolean.FALSE,Boolean.FALSE,Boolean.FALSE}
+                ,b.getInd5MinIntervals());
+        assertArrayEquals("All 1min should be true"
+                ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.FALSE,Boolean.FALSE}
+                ,b.getInd1MinIntervals());
+    }
 
     @Test
     public void should_show_235959() {
