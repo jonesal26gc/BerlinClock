@@ -12,6 +12,9 @@ import java.lang.annotation.Target;
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MethodInfo{
+    /*********************************************************************************
+     * This ANNOTATION makes the method names available at runtime.
+     *********************************************************************************/
     String author() default "Tony";
     String comments();
     String date();
