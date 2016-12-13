@@ -25,6 +25,7 @@ public class BerlinClockApp {
         // Format and display the clock.
         b.calculateIndicators();
         b.display();
+        b.displayInWindow();
 
     }
 }

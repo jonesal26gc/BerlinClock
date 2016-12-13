@@ -137,11 +137,11 @@ public class BerlinClockTest {
     public void should_display_second_on() {
         BerlinClock b1 = new BerlinClock("01:00:00");
         assertEquals("Second should be displayed"
-                , ( "                 * *" + NEW_LINE +
+                , ( NEW_LINE + "                 * *" + NEW_LINE +
                     "               *     *" + NEW_LINE +
                     "             *    "+"Y"+"    *" + NEW_LINE +
                     "               *     *" + NEW_LINE +
-                    "                 * *" )
+                    "                 * *" + NEW_LINE)
                 ,b1.formatSecondBox());
     }
 
@@ -150,7 +150,7 @@ public class BerlinClockTest {
         assertEquals("All four 5hr lights should be ON."
                 , ( "╔═══════╗╔═══════╗╔═══════╗╔═══════╗" + NEW_LINE +
                     "║   R   ║║   R   ║║   R   ║║   R   ║" + NEW_LINE +
-                    "╚═══════╝╚═══════╝╚═══════╝╚═══════╝" )
+                    "╚═══════╝╚═══════╝╚═══════╝╚═══════╝" + NEW_LINE )
                 ,new BerlinClock().formatFourBoxes(Boolean.TRUE
                 ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}));
     }
@@ -160,7 +160,7 @@ public class BerlinClockTest {
         assertEquals("All four 1hr lights should be ON."
                 , ( "╔═══════╗╔═══════╗╔═══════╗╔═══════╗" + NEW_LINE +
                     "║   R   ║║   R   ║║   R   ║║   R   ║" + NEW_LINE +
-                    "╚═══════╝╚═══════╝╚═══════╝╚═══════╝" )
+                    "╚═══════╝╚═══════╝╚═══════╝╚═══════╝" + NEW_LINE)
                 ,new BerlinClock().formatFourBoxes(Boolean.TRUE
                 ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}));
     }
@@ -170,7 +170,7 @@ public class BerlinClockTest {
         assertEquals("All four 5min lights should be ON."
                 , ( "╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗" + NEW_LINE +
                     "║Y║║Y║║R║ ║Y║║Y║║R║ ║Y║║Y║║R║ ║Y║║Y║" + NEW_LINE +
-                    "╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝" )
+                    "╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝" + NEW_LINE)
                 ,new BerlinClock().formatElevenBoxes(new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE
                         ,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE
                         ,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE
@@ -182,9 +182,22 @@ public class BerlinClockTest {
         assertEquals("All four 1hr lights should be ON."
                 , ( "╔═══════╗╔═══════╗╔═══════╗╔═══════╗" + NEW_LINE +
                     "║   Y   ║║   Y   ║║   Y   ║║   Y   ║" + NEW_LINE +
-                    "╚═══════╝╚═══════╝╚═══════╝╚═══════╝" )
+                    "╚═══════╝╚═══════╝╚═══════╝╚═══════╝" + NEW_LINE)
                 ,new BerlinClock().formatFourBoxes(Boolean.FALSE
                         ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}));
     }
 
+    @Test
+    public void should_display_on_console() {
+        BerlinClock b = new BerlinClock("20:00:00");
+        b.calculateIndicators();
+        assertTrue(b.display());
+    }
+
+    @Test
+    public void should_display_in_window() {
+        BerlinClock b = new BerlinClock("20:00:00");
+        b.calculateIndicators();
+        assertTrue(b.displayInWindow());
+    }
 }

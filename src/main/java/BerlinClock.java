@@ -1,3 +1,5 @@
+import javax.swing.*;
+import java.awt.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -25,12 +27,19 @@ public class BerlinClock {
     // The output characters.
     private static final String RED_CHAR = "R";
     private static final String YELLOW_CHAR = "Y";
-    private static final String OFF_CHAR = "O";
+    private static final String OFF_CHAR = " ";
     private static final String NEW_LINE = "\n";
 
     //private static final String RED_CHAR = "\033[31;5;7mR\033[0m";
     //private static final String YELLOW_CHAR = "\033[33;5;7mY\033[0m";
     //private static final String OFF_CHAR = " ";
+
+    private static String[] fontOptions = {"Serif", "Agency FB", "Arial", "Calibri", "Cambrian"
+            , "Century Gothic", "Comic Sans MS", "Courier New"
+            , "Forte", "Garamond", "Monospaced", "Segoe UI"
+            , "Times New Roman", "Trebuchet MS", "Serif"};
+    //private static String[] sizeOptions = {"8", "10", "12", "14", "16", "18", "20", "22", "24", "26", "28"};
+    private static int [] sizeOptions = {8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28};
 
 
     public BerlinClock() {}
@@ -153,16 +162,48 @@ public class BerlinClock {
 
     }
 
-    public void display() {
+    public boolean display() {
         /*********************************************************************************
          * Display the Berlin Clock.
          *********************************************************************************/
 
-        System.out.println(formatSecondBox());
-        System.out.println(formatFourBoxes(Boolean.TRUE,ind5HrIntervals));
-        System.out.println(formatFourBoxes(Boolean.TRUE,ind1HrIntervals));
-        System.out.println(formatElevenBoxes(ind5MinIntervals));
-        System.out.println(formatFourBoxes(Boolean.FALSE,ind1MinIntervals));
+        System.out.print(formatSecondBox());
+        System.out.print(formatFourBoxes(Boolean.TRUE,ind5HrIntervals));
+        System.out.print(formatFourBoxes(Boolean.TRUE,ind1HrIntervals));
+        System.out.print(formatElevenBoxes(ind5MinIntervals));
+        System.out.print(formatFourBoxes(Boolean.FALSE,ind1MinIntervals));
+
+        return Boolean.TRUE;
+    }
+
+    public boolean displayInWindow() {
+        /*********************************************************************************
+         * Display the Berlin Clock in a new window.
+         *********************************************************************************/
+
+        // Declare a label field.
+        JLabel labelField = new JLabel("Time is " + getParameterTime());
+        labelField.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Declare a text area field.
+        JTextArea textField = new JTextArea(17,36);
+        textField.append(formatSecondBox());
+        textField.append(formatFourBoxes(Boolean.TRUE,ind5HrIntervals));
+        textField.append(formatFourBoxes(Boolean.TRUE,ind1HrIntervals));
+        textField.append(formatElevenBoxes(ind5MinIntervals));
+        textField.append(formatFourBoxes(Boolean.FALSE,ind1MinIntervals));
+        textField.setEditable(false);
+        textField.setFont(new Font(fontOptions[7], Font.BOLD, sizeOptions[6]));
+
+        // Declare and open the frame.
+        JFrame frame = new JFrame("Berlin Clock");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().add(labelField, BorderLayout.NORTH);
+        frame.getContentPane().add(textField, BorderLayout.CENTER);
+        frame.pack();
+        frame.setVisible(true);
+
+        return Boolean.TRUE;
     }
 
     public String formatSecondBox() {
@@ -179,12 +220,12 @@ public class BerlinClock {
         }
 
         // Format the output to a string.
-        String outputLines = "";
+        String outputLines = NEW_LINE;
         outputLines = outputLines.concat("                 * *" + NEW_LINE);
         outputLines = outputLines.concat("               *     *" + NEW_LINE);
         outputLines = outputLines.concat("             *    "+displayChar+"    *" + NEW_LINE);
         outputLines = outputLines.concat("               *     *" + NEW_LINE);
-        outputLines = outputLines.concat("                 * *");
+        outputLines = outputLines.concat("                 * *" + NEW_LINE);
 
         return outputLines;
     }
@@ -213,11 +254,16 @@ public class BerlinClock {
 
         // Format the output to a string.
         String outputLines = "";
-        outputLines = outputLines.concat("╔═══════╗╔═══════╗╔═══════╗╔═══════╗" + NEW_LINE);
+        outputLines = outputLines.concat(
+                "╔═══════╗╔═══════╗╔═══════╗╔═══════╗" +
+                NEW_LINE);
         for ( String x : displayChar ) {
             outputLines = outputLines.concat("║   "+x+"   ║");
         }
-        outputLines = outputLines.concat(NEW_LINE + "╚═══════╝╚═══════╝╚═══════╝╚═══════╝");
+        outputLines = outputLines.concat(
+                NEW_LINE +
+                "╚═══════╝╚═══════╝╚═══════╝╚═══════╝" +
+                NEW_LINE);
 
         return outputLines;
     }
@@ -247,7 +293,9 @@ public class BerlinClock {
 
         // Format the output to a string.
         String outputLines = "";
-        outputLines = outputLines.concat("╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗" + NEW_LINE);
+        outputLines = outputLines.concat(
+                "╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗" +
+                NEW_LINE);
 
         y = 0;
         for ( String x : displayChar ) {
@@ -258,7 +306,10 @@ public class BerlinClock {
             }
         }
 
-        outputLines = outputLines.concat(NEW_LINE + "╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝");
+        outputLines = outputLines.concat(
+                NEW_LINE +
+                "╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝" +
+                NEW_LINE);
 
         return outputLines;
     }
