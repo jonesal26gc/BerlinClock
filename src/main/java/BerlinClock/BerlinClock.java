@@ -1,3 +1,7 @@
+package BerlinClock;
+
+import Annotations.MethodInfo;
+
 import javax.swing.*;
 import java.awt.*;
 import java.text.DateFormat;
@@ -86,6 +90,7 @@ public class BerlinClock {
         return ind1MinIntervals;
     }
 
+    @MethodInfo(author = "TonyJ", comments = "setParameterTime", date = "2016-12-13", revision = 2)
     public void setParameterTime(String parameterTime) throws Exception {
         /*********************************************************************************
          * Set the current time, ensuring that it's valid.
@@ -105,6 +110,7 @@ public class BerlinClock {
 
     }
 
+    @MethodInfo(author = "TonyJ", comments = "defaultTime", date = "2016-12-13", revision = 2)
     public void defaultTime() {
         /*********************************************************************************
          * Set the current time, defaulting to the current time.
@@ -120,6 +126,7 @@ public class BerlinClock {
 
     }
 
+    @MethodInfo(author = "TonyJ", comments = "calculateIndicators", date = "2016-12-13", revision = 2)
     public void calculateIndicators() {
         /*********************************************************************************
          * Set indicators corresponding to all the bulbs that must be lit for the time.
@@ -162,6 +169,11 @@ public class BerlinClock {
 
     }
 
+    @MethodInfo(author = "TonyJ", comments = "display", date = "2016-12-13", revision = 2)
+    // @deprecated
+    // The following method of display should no longer be used.
+    // Rather, use the pop-up window instead.
+    @Deprecated     // states that this method is "old hat" !
     public boolean display() {
         /*********************************************************************************
          * Display the Berlin Clock.
@@ -176,6 +188,7 @@ public class BerlinClock {
         return Boolean.TRUE;
     }
 
+    @MethodInfo(author = "TonyJ", comments = "displayInWindow", date = "2016-12-13", revision = 2)
     public boolean displayInWindow() {
         /*********************************************************************************
          * Display the Berlin Clock in a new window.
@@ -206,6 +219,7 @@ public class BerlinClock {
         return Boolean.TRUE;
     }
 
+    @MethodInfo(author = "TonyJ", comments = "formatSecondBox", date = "2016-12-13", revision = 2)
     public String formatSecondBox() {
         /*********************************************************************************
          * Format the image for the second.
@@ -230,6 +244,7 @@ public class BerlinClock {
         return outputLines;
     }
 
+    @MethodInfo(author = "TonyJ", comments = "formatFourBoxes", date = "2016-12-13", revision = 2)
     public String formatFourBoxes(boolean hourIndicator, boolean [] args) {
         /*********************************************************************************
          * Format the image for either the Hour or Minutes where 4 boxes are required.
@@ -268,6 +283,7 @@ public class BerlinClock {
         return outputLines;
     }
 
+    @MethodInfo(author = "TonyJ", comments = "formatElevenBoxes", date = "2016-12-13", revision = 2)
     public String formatElevenBoxes(boolean [] args) {
         /*********************************************************************************
          * Format the image for the 5 minute intervals where eleven boxes are required.
@@ -314,12 +330,14 @@ public class BerlinClock {
         return outputLines;
     }
 
+    @Override // States that this method overrides that of a super-class (i.e. Object.toString().
+    @MethodInfo(author = "TonyJ", comments = "toString", date = "2016-12-13", revision = 2)
     public String toString() {
         /*********************************************************************************
          * Show all the values.
          *********************************************************************************/
 
-        return "BerlinClock{" +
+        return "BerlinClock.BerlinClock{" +
                 "parameterTime='" + parameterTime + '\'' +
                 ", inHours=" + inHours +
                 ", inMinutes=" + inMinutes +

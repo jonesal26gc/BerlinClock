@@ -1,4 +1,8 @@
+package BerlinClock;
 
+import BerlinClock.BerlinClock;
+
+@SuppressWarnings("deprecation")   // switches off the warning for the BerlinClock.BerlinClock.display() method.
 public class BerlinClockApp {
 
     public static void main(String[] args) {
