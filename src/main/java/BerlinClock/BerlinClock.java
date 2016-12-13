@@ -14,7 +14,7 @@ public class BerlinClock {
      * Display the time in the Berlin Clock format.
      *********************************************************************************/
 
-    String parameterTime;
+    private String parameterTime;
 
     // Values derived from the input time string.
     private int inHours;
@@ -45,6 +45,7 @@ public class BerlinClock {
     //private static String[] sizeOptions = {"8", "10", "12", "14", "16", "18", "20", "22", "24", "26", "28"};
     private static int [] sizeOptions = {8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28};
 
+    private static final int REVISION = 1;
 
     public BerlinClock() {}
 
@@ -61,7 +62,7 @@ public class BerlinClock {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-        } finally {}
+        }
 
         calculateIndicators();
     }
@@ -122,7 +123,7 @@ public class BerlinClock {
             setParameterTime(sdf.format(cal1.getTime()));
         } catch (Exception ex) {
             ex.printStackTrace();
-        } finally {}
+        }
 
     }
 
@@ -179,7 +180,7 @@ public class BerlinClock {
          * Display the Berlin Clock.
          *********************************************************************************/
 
-        System.out.print(formatSecondBox());
+        System.out.print(formatSecondBox(indSecondInterval));
         System.out.print(formatFourBoxes(Boolean.TRUE,ind5HrIntervals));
         System.out.print(formatFourBoxes(Boolean.TRUE,ind1HrIntervals));
         System.out.print(formatElevenBoxes(ind5MinIntervals));
@@ -200,7 +201,7 @@ public class BerlinClock {
 
         // Declare a text area field.
         JTextArea textField = new JTextArea(17,36);
-        textField.append(formatSecondBox());
+        textField.append(formatSecondBox(indSecondInterval));
         textField.append(formatFourBoxes(Boolean.TRUE,ind5HrIntervals));
         textField.append(formatFourBoxes(Boolean.TRUE,ind1HrIntervals));
         textField.append(formatElevenBoxes(ind5MinIntervals));
@@ -220,14 +221,14 @@ public class BerlinClock {
     }
 
     @MethodInfo(author = "TonyJ", comments = "formatSecondBox", date = "2016-12-13", revision = 2)
-    public String formatSecondBox() {
+    public String formatSecondBox(boolean arg) {
         /*********************************************************************************
          * Format the image for the second.
          *********************************************************************************/
 
         // Set the output character.
         String displayChar;
-        if (indSecondInterval) {
+        if (arg) {
             displayChar = YELLOW_CHAR;
         } else {
             displayChar = OFF_CHAR;
@@ -331,7 +332,7 @@ public class BerlinClock {
     }
 
     @Override // States that this method overrides that of a super-class (i.e. Object.toString().
-    @MethodInfo(author = "TonyJ", comments = "toString", date = "2016-12-13", revision = 2)
+    @MethodInfo(author = "TonyJ", comments = "toString", date = "2016-12-13", revision = REVISION)
     public String toString() {
         /*********************************************************************************
          * Show all the values.

@@ -134,14 +134,13 @@ public class BerlinClockTest {
 
     @Test
     public void should_display_second_on() {
-        BerlinClock b1 = new BerlinClock("01:00:00");
         assertEquals("Second should be displayed"
                 , ( NEW_LINE + "                 * *" + NEW_LINE +
                     "               *     *" + NEW_LINE +
                     "             *    "+"Y"+"    *" + NEW_LINE +
                     "               *     *" + NEW_LINE +
                     "                 * *" + NEW_LINE)
-                ,b1.formatSecondBox());
+                ,new BerlinClock().formatSecondBox(Boolean.TRUE));
     }
 
     @Test
