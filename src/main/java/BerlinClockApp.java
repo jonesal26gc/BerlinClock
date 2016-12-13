@@ -22,7 +22,7 @@ public class BerlinClockApp {
         // Display the time that has been used.
         System.out.println(b.toString());
 
-        // Format and display the clock.
+        // Format the indicators and display the clock.
         b.calculateIndicators();
         b.display();
         b.displayInWindow();
