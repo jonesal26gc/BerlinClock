@@ -38,12 +38,12 @@ public class BerlinClock {
     //private static final String YELLOW_CHAR = "\033[33;5;7mY\033[0m";
     //private static final String OFF_CHAR = " ";
 
-    private static String[] fontOptions = {"Serif", "Agency FB", "Arial", "Calibri", "Cambrian"
+    // Font information.
+    private static final String[] fontOptions = {"Serif", "Agency FB", "Arial", "Calibri", "Cambrian"
             , "Century Gothic", "Comic Sans MS", "Courier New"
             , "Forte", "Garamond", "Monospaced", "Segoe UI"
             , "Times New Roman", "Trebuchet MS", "Serif"};
-    //private static String[] sizeOptions = {"8", "10", "12", "14", "16", "18", "20", "22", "24", "26", "28"};
-    private static int [] sizeOptions = {8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28};
+    private static final int [] sizeOptions = {8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28};
 
     private static final int REVISION = 1;
 
@@ -196,7 +196,7 @@ public class BerlinClock {
          *********************************************************************************/
 
         // Declare a label field.
-        JLabel labelField = new JLabel("Time is " + getParameterTime());
+        JLabel labelField = new JLabel(getParameterTime());
         labelField.setHorizontalAlignment(SwingConstants.CENTER);
 
         // Declare a text area field.
@@ -240,7 +240,7 @@ public class BerlinClock {
         outputLines = outputLines.concat("               *     *" + NEW_LINE);
         outputLines = outputLines.concat("             *    "+displayChar+"    *" + NEW_LINE);
         outputLines = outputLines.concat("               *     *" + NEW_LINE);
-        outputLines = outputLines.concat("                 * *" + NEW_LINE);
+        outputLines = outputLines.concat("                 * *");
 
         return outputLines;
     }
@@ -269,7 +269,7 @@ public class BerlinClock {
         }
 
         // Format the output to a string.
-        String outputLines = "";
+        String outputLines = NEW_LINE;
         outputLines = outputLines.concat(
                 "╔═══════╗╔═══════╗╔═══════╗╔═══════╗" +
                 NEW_LINE);
@@ -278,8 +278,7 @@ public class BerlinClock {
         }
         outputLines = outputLines.concat(
                 NEW_LINE +
-                "╚═══════╝╚═══════╝╚═══════╝╚═══════╝" +
-                NEW_LINE);
+                "╚═══════╝╚═══════╝╚═══════╝╚═══════╝");
 
         return outputLines;
     }
@@ -309,7 +308,7 @@ public class BerlinClock {
         }
 
         // Format the output to a string.
-        String outputLines = "";
+        String outputLines = NEW_LINE;
         outputLines = outputLines.concat(
                 "╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗" +
                 NEW_LINE);
@@ -325,8 +324,7 @@ public class BerlinClock {
 
         outputLines = outputLines.concat(
                 NEW_LINE +
-                "╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝" +
-                NEW_LINE);
+                "╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝");
 
         return outputLines;
     }

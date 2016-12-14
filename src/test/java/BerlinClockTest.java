@@ -139,16 +139,17 @@ public class BerlinClockTest {
                     "               *     *" + NEW_LINE +
                     "             *    "+"Y"+"    *" + NEW_LINE +
                     "               *     *" + NEW_LINE +
-                    "                 * *" + NEW_LINE)
+                    "                 * *")
                 ,new BerlinClock().formatSecondBox(Boolean.TRUE));
     }
 
     @Test
     public void should_display_all_5hr_lights_on() {
         assertEquals("All four 5hr lights should be ON."
-                , ( "╔═══════╗╔═══════╗╔═══════╗╔═══════╗" + NEW_LINE +
+                , ( NEW_LINE +
+                    "╔═══════╗╔═══════╗╔═══════╗╔═══════╗" + NEW_LINE +
                     "║   R   ║║   R   ║║   R   ║║   R   ║" + NEW_LINE +
-                    "╚═══════╝╚═══════╝╚═══════╝╚═══════╝" + NEW_LINE )
+                    "╚═══════╝╚═══════╝╚═══════╝╚═══════╝")
                 ,new BerlinClock().formatFourBoxes(Boolean.TRUE
                 ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}));
     }
@@ -156,9 +157,10 @@ public class BerlinClockTest {
     @Test
     public void should_display_all_1hr_lights_on() {
         assertEquals("All four 1hr lights should be ON."
-                , ( "╔═══════╗╔═══════╗╔═══════╗╔═══════╗" + NEW_LINE +
+                , ( NEW_LINE +
+                    "╔═══════╗╔═══════╗╔═══════╗╔═══════╗" + NEW_LINE +
                     "║   R   ║║   R   ║║   R   ║║   R   ║" + NEW_LINE +
-                    "╚═══════╝╚═══════╝╚═══════╝╚═══════╝" + NEW_LINE)
+                    "╚═══════╝╚═══════╝╚═══════╝╚═══════╝")
                 ,new BerlinClock().formatFourBoxes(Boolean.TRUE
                 ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}));
     }
@@ -166,9 +168,10 @@ public class BerlinClockTest {
     @Test
     public void should_display_all_5min_lights_on() {
         assertEquals("All four 5min lights should be ON."
-                , ( "╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗" + NEW_LINE +
+                , ( NEW_LINE +
+                    "╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗" + NEW_LINE +
                     "║Y║║Y║║R║ ║Y║║Y║║R║ ║Y║║Y║║R║ ║Y║║Y║" + NEW_LINE +
-                    "╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝" + NEW_LINE)
+                    "╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝")
                 ,new BerlinClock().formatElevenBoxes(new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE
                         ,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE
                         ,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE
@@ -178,9 +181,10 @@ public class BerlinClockTest {
     @Test
     public void should_display_all_1min_lights_on() {
         assertEquals("All four 1hr lights should be ON."
-                , ( "╔═══════╗╔═══════╗╔═══════╗╔═══════╗" + NEW_LINE +
+                , ( NEW_LINE +
+                    "╔═══════╗╔═══════╗╔═══════╗╔═══════╗" + NEW_LINE +
                     "║   Y   ║║   Y   ║║   Y   ║║   Y   ║" + NEW_LINE +
-                    "╚═══════╝╚═══════╝╚═══════╝╚═══════╝" + NEW_LINE)
+                    "╚═══════╝╚═══════╝╚═══════╝╚═══════╝")
                 ,new BerlinClock().formatFourBoxes(Boolean.FALSE
                         ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}));
     }
