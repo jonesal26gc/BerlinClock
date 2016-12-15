@@ -1,7 +1,5 @@
 package BerlinClock;
 
-import BerlinClock.BerlinClock;
-
 @SuppressWarnings("deprecation")   // switches off the warning for the BerlinClock.BerlinClock.display() method.
 public class BerlinClockApp {
 
@@ -26,10 +24,15 @@ public class BerlinClockApp {
         // Display the time that has been used.
         System.out.println(b.toString());
 
-        // Format the indicators and display the clock.
+        // Format the indicators and display the clock for the specified time.
         b.calculateIndicators();
         b.display();
-        b.displayInWindow();
+        try {
+            b.setWindowDisplayInMilliSeconds(3000);
+            b.displayInWindow();
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
 
     }
 }

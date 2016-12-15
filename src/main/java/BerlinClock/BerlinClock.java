@@ -44,6 +44,7 @@ public class BerlinClock {
             , "Forte", "Garamond", "Monospaced", "Segoe UI"
             , "Times New Roman", "Trebuchet MS", "Serif"};
     private static final int [] sizeOptions = {8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28};
+    private int windowDisplayInMilliSeconds = 3000;
 
     private static final int REVISION = 1;
 
@@ -89,6 +90,12 @@ public class BerlinClock {
 
     public boolean[] getInd1MinIntervals() {
         return ind1MinIntervals;
+    }
+
+    public void setWindowDisplayInMilliSeconds(int windowDisplayInMilliSeconds) {
+        if (windowDisplayInMilliSeconds <= 10000) {
+            this.windowDisplayInMilliSeconds = windowDisplayInMilliSeconds;
+        }
     }
 
     @MethodInfo(author = "TonyJ", comments = "setParameterTime", date = "2016-12-13", revision = 2)
@@ -190,7 +197,7 @@ public class BerlinClock {
     }
 
     @MethodInfo(author = "TonyJ", comments = "displayInWindow", date = "2016-12-13", revision = 2)
-    public boolean displayInWindow() {
+    public boolean displayInWindow() throws InterruptedException {
         /*********************************************************************************
          * Display the Berlin Clock in a new window.
          *********************************************************************************/
@@ -207,7 +214,7 @@ public class BerlinClock {
         textField.append(formatElevenBoxes(ind5MinIntervals));
         textField.append(formatFourBoxes(Boolean.FALSE,ind1MinIntervals));
         textField.setEditable(false);
-        textField.setFont(new Font(fontOptions[7], Font.BOLD, sizeOptions[6]));
+        textField.setFont(new Font(fontOptions[7], Font.BOLD, sizeOptions[4]));
 
         // Declare and open the frame.
         JFrame frame = new JFrame("Berlin Clock");
@@ -216,6 +223,12 @@ public class BerlinClock {
         frame.getContentPane().add(textField, BorderLayout.CENTER);
         frame.pack();
         frame.setVisible(true);
+
+        // Sleep for a while with the display on the screen.
+        Thread.sleep(windowDisplayInMilliSeconds);
+
+        // close the screen.
+        frame.dispose();
 
         return Boolean.TRUE;
     }

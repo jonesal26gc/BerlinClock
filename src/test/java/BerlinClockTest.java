@@ -200,6 +200,11 @@ public class BerlinClockTest {
     public void should_display_in_window() {
         BerlinClock b = new BerlinClock("20:00:00");
         b.calculateIndicators();
-        assertTrue(b.displayInWindow());
+        try {
+            b.setWindowDisplayInMilliSeconds(500);
+            assertTrue(b.displayInWindow());
+        } catch ( InterruptedException ex ) {
+            ex.printStackTrace();
+        }
     }
 }
