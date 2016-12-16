@@ -8,17 +8,13 @@ public class BerlinClockApp {
          * Run the Berlin Clock application.
          *********************************************************************************/
 
-        BerlinClock b = new BerlinClock();
+        BerlinClock b = null;
 
         // If the parameters have not provided a time string, then use the current time.
-        try {
-            if (args.length == 0) {
-                b.defaultTime();
-            } else {
-                b.setParameterTime(args[0]);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        if (args.length == 0) {
+            b = new BerlinClock("");
+        } else {
+            b = new BerlinClock(args[0]);
         }
 
         // Display the time that has been used.

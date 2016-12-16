@@ -72,6 +72,8 @@ public class BerlinClock {
         return parameterTime;
     }
 
+    public int getInHours() { return inHours; }
+
     public boolean getIndSecondInterval() {
         return indSecondInterval;
     }
