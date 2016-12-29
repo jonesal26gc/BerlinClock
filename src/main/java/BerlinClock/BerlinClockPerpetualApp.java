@@ -14,10 +14,26 @@ public class BerlinClockPerpetualApp {
 
         // The frequency of the update.
         int intervalDelayMilliseconds = 1000;
-        final int intervalDelayMinutes=10;
+        int intervalDelayMinutes=10;
         int maximumIterations = 60;
         int startHour = 9;
         int endHour = 17;
+
+        // Use the parameters to adjust the run characteristics.
+        if (args.length >= 3) {
+            int paramStartHour = Integer.parseInt(args[0]);
+            int paramEndHour = Integer.parseInt(args[1]);
+            int paramIntervalDelayMinutes = Integer.parseInt(args[2]);
+            if ( paramStartHour >= 8
+               & paramEndHour <= 19
+               & paramIntervalDelayMinutes >= 0
+               & paramIntervalDelayMinutes <= 60 ) {
+                startHour = paramStartHour;
+                endHour = paramEndHour;
+                intervalDelayMinutes = paramIntervalDelayMinutes;
+            }
+        }
+
 
         BerlinClock b = new BerlinClock("");
 
@@ -36,7 +52,7 @@ public class BerlinClockPerpetualApp {
 
             // Set the time and the indicators.
             b = new BerlinClock("");
-            b.setWindowDisplayInMilliSeconds(15000);
+            //b.setWindowDisplayInMilliSeconds(15000);
 
             // Display the window.
             try { b.displayInWindow();

@@ -44,7 +44,7 @@ public class BerlinClock {
             , "Forte", "Garamond", "Monospaced", "Segoe UI"
             , "Times New Roman", "Trebuchet MS", "Serif"};
     private static final int [] sizeOptions = {8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28};
-    private int windowDisplayInMilliSeconds = 3000;
+    private int windowDisplayInMilliSeconds = 15000;
 
     private static final int REVISION = 1;
 
