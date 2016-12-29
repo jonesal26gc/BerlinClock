@@ -14,8 +14,8 @@ public class BerlinClockPerpetualApp {
 
         // The frequency of the update.
         int intervalDelayMilliseconds = 1000;
-        final int intervalDelayMinutes=15;
-        int maximumIterations = 40;
+        final int intervalDelayMinutes=10;
+        int maximumIterations = 60;
         int startHour = 9;
         int endHour = 17;
 
@@ -36,7 +36,7 @@ public class BerlinClockPerpetualApp {
 
             // Set the time and the indicators.
             b = new BerlinClock("");
-            //b.setWindowDisplayInMilliSeconds(500);
+            b.setWindowDisplayInMilliSeconds(15000);
 
             // Display the window.
             try { b.displayInWindow();
