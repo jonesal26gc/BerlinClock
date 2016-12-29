@@ -13,27 +13,43 @@ public class BerlinClockPerpetualApp {
      *********************************************************************************/
 
         // The frequency of the update.
-        int intervalDelayMilliseconds = 1000;
-        int intervalDelayMinutes=10;
-        int maximumIterations = 60;
         int startHour = 9;
         int endHour = 17;
+        int intervalDelayMinutes=10;
+        int maximumIterations = 100;
+
+        int intervalDelayMilliseconds = 1000;
 
         // Use the parameters to adjust the run characteristics.
-        if (args.length >= 3) {
+        if (args.length >= 4) {
+            System.out.println("Parameter #1 (start hour) = '" + args[0] + "'");
+            System.out.println("Parameter #2 (end hour)   = '" + args[1] + "'");
+            System.out.println("Parameter #3 (interval)   = '" + args[2] + "'");
+            System.out.println("Parameter #4 (iterations) = '" + args[3] + "'");
+
             int paramStartHour = Integer.parseInt(args[0]);
             int paramEndHour = Integer.parseInt(args[1]);
             int paramIntervalDelayMinutes = Integer.parseInt(args[2]);
+            int paramMaximumIterations = Integer.parseInt(args[3]);
             if ( paramStartHour >= 8
-               & paramEndHour <= 19
+               & paramEndHour <= 18
                & paramIntervalDelayMinutes >= 0
-               & paramIntervalDelayMinutes <= 60 ) {
+               & paramIntervalDelayMinutes <= 60
+               & paramMaximumIterations    >= 0
+               & paramMaximumIterations    <=1000 ) {
                 startHour = paramStartHour;
                 endHour = paramEndHour;
                 intervalDelayMinutes = paramIntervalDelayMinutes;
+                maximumIterations = paramMaximumIterations;
+            } else {
+                System.out.println("Error in input parameters=" +
+                        paramStartHour + "/" + paramEndHour + "/" +
+                        paramIntervalDelayMinutes + "/" + paramMaximumIterations);
+                return;
             }
         }
 
+        System.out.println("Starting");
 
         BerlinClock b = new BerlinClock("");
 
@@ -66,5 +82,7 @@ public class BerlinClockPerpetualApp {
                 ex.printStackTrace();
             }
         }
+
+        System.out.println("Ending");
     }
 }
