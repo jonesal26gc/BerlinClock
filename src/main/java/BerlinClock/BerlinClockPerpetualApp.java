@@ -13,12 +13,17 @@ public class BerlinClockPerpetualApp {
      *********************************************************************************/
 
         // The frequency of the update.
-        int intervalDelay = 1000;
-        int maximumIterations = 5;
+        int intervalDelayMilliseconds = 1000;
+        final int intervalDelayMinutes=15;
+        int maximumIterations = 40;
         int startHour = 9;
         int endHour = 17;
 
         BerlinClock b = new BerlinClock("");
+
+        if ( intervalDelayMinutes != 0 ) {
+            intervalDelayMilliseconds = intervalDelayMinutes * 60 * 1000;
+        }
 
         // Loop around a number of times displaying the current (default option) time.
         int i = 0;
@@ -40,7 +45,7 @@ public class BerlinClockPerpetualApp {
             }
 
             // Wait a while before going around again.
-            try { sleep(intervalDelay);
+            try { sleep(intervalDelayMilliseconds);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
