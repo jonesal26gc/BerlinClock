@@ -21,7 +21,6 @@ public class BerlinClockApp {
         System.out.println(b.toString());
 
         // Format the indicators and display the clock for the specified time.
-        b.calculateIndicators();
         b.display();
         try {
             b.setWindowDisplayInMilliSeconds(3000);

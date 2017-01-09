@@ -199,7 +199,6 @@ public class BerlinClockTest {
     @Test
     public void should_display_in_window() {
         BerlinClock b = new BerlinClock("20:00:00");
-        b.calculateIndicators();
         try {
             b.setWindowDisplayInMilliSeconds(500);
             assertTrue(b.displayInWindow());
