@@ -24,7 +24,8 @@ public class BerlinClockApp {
         b.display();
         try {
             b.setWindowDisplayInMilliSeconds(3000);
-            b.displayInWindow();
+            //b.displayInWindow();
+            b.displayInPane();
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }

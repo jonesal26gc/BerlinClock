@@ -3,6 +3,10 @@ package BerlinClock;
 import Annotations.MethodInfo;
 
 import javax.swing.*;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -234,6 +238,73 @@ public class BerlinClock {
 
         return Boolean.TRUE;
     }
+
+    public boolean displayInPane() throws InterruptedException {
+        /*********************************************************************************
+         * Display the Berlin Clock in a new window.
+         *********************************************************************************/
+
+        // Declare a label field.
+        JLabel labelField = new JLabel(getParameterTime());
+        labelField.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Declare a text area field.
+        JTextPane textField = new JTextPane();
+
+        appendToPane(textField,formatSecondBox(indSecondInterval),Color.blue);
+
+        String printString = formatFourBoxes(Boolean.TRUE,ind5HrIntervals);
+        for ( int i=0 ; i< (printString.length()); i++){
+            char x = ( printString.charAt(i));
+            switch (x) {
+                case 'R':
+                    appendToPane(textField, String.valueOf(x), Color.RED);
+                    break;
+                case 'Y':
+                    appendToPane(textField, String.valueOf(x), Color.YELLOW);
+                    break;
+                default:
+                    appendToPane(textField, String.valueOf(x), Color.BLACK);
+            }
+        }
+        //appendToPane(textField,formatFourBoxes(Boolean.TRUE,ind5HrIntervals),Color.red);
+        appendToPane(textField,formatFourBoxes(Boolean.TRUE,ind1HrIntervals),Color.yellow);
+        appendToPane(textField,formatElevenBoxes(ind5MinIntervals),Color.blue);
+        appendToPane(textField,formatFourBoxes(Boolean.FALSE,ind1MinIntervals),Color.blue);
+        textField.setEditable(false);
+        textField.setFont(new Font(fontOptions[7], Font.BOLD, sizeOptions[4]));
+
+        // Declare and open the frame.
+        JFrame frame = new JFrame("Berlin Clock");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().add(labelField, BorderLayout.NORTH);
+        frame.getContentPane().add(textField, BorderLayout.CENTER);
+        frame.pack();
+        frame.setVisible(true);
+
+        // Sleep for a while with the display on the screen.
+        Thread.sleep(windowDisplayInMilliSeconds);
+
+        // close the screen.
+        frame.dispose();
+
+        return Boolean.TRUE;
+    }
+
+    private void appendToPane(JTextPane tp, String msg, Color c)
+    {
+        StyleContext sc = StyleContext.getDefaultStyleContext();
+        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
+
+        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
+        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+
+        int len = tp.getDocument().getLength();
+        tp.setCaretPosition(len);
+        tp.setCharacterAttributes(aset, false);
+        tp.replaceSelection(msg);
+    }
+
 
     @MethodInfo(author = "TonyJ", comments = "formatSecondBox", date = "2016-12-13", revision = 2)
     public String formatSecondBox(boolean arg) {
