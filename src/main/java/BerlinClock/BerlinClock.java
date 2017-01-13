@@ -258,7 +258,10 @@ public class BerlinClock {
                 formatElevenBoxes(ind5MinIntervals) +
                 formatFourBoxes(Boolean.FALSE,ind1MinIntervals);
 
-        // Loop through each character and set the colour and revised shape.
+        // Loop through each characters and set the colour and revised shape to
+        // provide a larger block.
+        printString = printString.replace("  R  ","RRRRR").replace("  Y  ","YYYYY");
+
         for ( int i=0 ; i< (printString.length()); i++){
             char x = ( printString.charAt(i));
             switch (x) {
