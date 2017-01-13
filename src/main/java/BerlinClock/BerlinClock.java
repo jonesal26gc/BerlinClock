@@ -251,28 +251,30 @@ public class BerlinClock {
         // Declare a text area field.
         JTextPane textField = new JTextPane();
 
-        appendToPane(textField,formatSecondBox(indSecondInterval),Color.blue);
+        // Concatenate the clock output.
+        String printString = formatSecondBox(indSecondInterval) +
+                formatFourBoxes(Boolean.TRUE,ind5HrIntervals) +
+                formatFourBoxes(Boolean.TRUE,ind1HrIntervals) +
+                formatElevenBoxes(ind5MinIntervals) +
+                formatFourBoxes(Boolean.FALSE,ind1MinIntervals);
 
-        String printString = formatFourBoxes(Boolean.TRUE,ind5HrIntervals);
+        // Loop through each character and set the colour and revised shape.
         for ( int i=0 ; i< (printString.length()); i++){
             char x = ( printString.charAt(i));
             switch (x) {
                 case 'R':
-                    appendToPane(textField, String.valueOf(x), Color.RED);
+                    appendToPane(textField, String.valueOf((char) 9608), Color.RED);
                     break;
                 case 'Y':
-                    appendToPane(textField, String.valueOf(x), Color.YELLOW);
+                    appendToPane(textField, String.valueOf((char) 9608), Color.yellow);
                     break;
                 default:
-                    appendToPane(textField, String.valueOf(x), Color.BLACK);
+                    appendToPane(textField, String.valueOf(x), Color.lightGray);
             }
         }
-        //appendToPane(textField,formatFourBoxes(Boolean.TRUE,ind5HrIntervals),Color.red);
-        appendToPane(textField,formatFourBoxes(Boolean.TRUE,ind1HrIntervals),Color.yellow);
-        appendToPane(textField,formatElevenBoxes(ind5MinIntervals),Color.blue);
-        appendToPane(textField,formatFourBoxes(Boolean.FALSE,ind1MinIntervals),Color.blue);
+
         textField.setEditable(false);
-        textField.setFont(new Font(fontOptions[7], Font.BOLD, sizeOptions[4]));
+        //textField.setFont(new Font(fontOptions[7], Font.BOLD, sizeOptions[2]));
 
         // Declare and open the frame.
         JFrame frame = new JFrame("Berlin Clock");
@@ -294,9 +296,10 @@ public class BerlinClock {
     private void appendToPane(JTextPane tp, String msg, Color c)
     {
         StyleContext sc = StyleContext.getDefaultStyleContext();
-        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
-
-        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
+        AttributeSet aset;
+        aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
+        aset = sc.addAttribute(aset, StyleConstants.FontFamily, fontOptions[7]);
+        aset = sc.addAttribute(aset, StyleConstants.FontSize, sizeOptions[2]);
         aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
 
         int len = tp.getDocument().getLength();

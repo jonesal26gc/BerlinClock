@@ -23,7 +23,7 @@ public class BerlinClockApp {
         // Format the indicators and display the clock for the specified time.
         b.display();
         try {
-            b.setWindowDisplayInMilliSeconds(3000);
+            b.setWindowDisplayInMilliSeconds(6000);
             //b.displayInWindow();
             b.displayInPane();
         } catch (InterruptedException ex) {
