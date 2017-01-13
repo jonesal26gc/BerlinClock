@@ -8,14 +8,14 @@ import static java.lang.Thread.sleep;
 public class BerlinClockPerpetualApp {
 
     public static void main(String[] args) {
-    /*********************************************************************************
-     * Run the Berlin Clock application perpetually.
-     *********************************************************************************/
+        /*********************************************************************************
+         * Run the Berlin Clock application perpetually.
+         *********************************************************************************/
 
         // The frequency of the update.
         int startHour = 9;
         int endHour = 17;
-        int intervalDelayMinutes=10;
+        int intervalDelayMinutes = 10;
         int maximumIterations = 100;
 
         int intervalDelayMilliseconds = 1000;
@@ -31,12 +31,12 @@ public class BerlinClockPerpetualApp {
             int paramEndHour = Integer.parseInt(args[1]);
             int paramIntervalDelayMinutes = Integer.parseInt(args[2]);
             int paramMaximumIterations = Integer.parseInt(args[3]);
-            if ( paramStartHour >= 8
-               & paramEndHour <= 18
-               & paramIntervalDelayMinutes >= 0
-               & paramIntervalDelayMinutes <= 60
-               & paramMaximumIterations    >= 0
-               & paramMaximumIterations    <=1000 ) {
+            if (paramStartHour >= 8
+                    & paramEndHour <= 18
+                    & paramIntervalDelayMinutes >= 0
+                    & paramIntervalDelayMinutes <= 60
+                    & paramMaximumIterations >= 0
+                    & paramMaximumIterations <= 1000) {
                 startHour = paramStartHour;
                 endHour = paramEndHour;
                 intervalDelayMinutes = paramIntervalDelayMinutes;
@@ -53,15 +53,15 @@ public class BerlinClockPerpetualApp {
 
         BerlinClock b = new BerlinClock("");
 
-        if ( intervalDelayMinutes != 0 ) {
+        if (intervalDelayMinutes != 0) {
             intervalDelayMilliseconds = intervalDelayMinutes * 60 * 1000;
         }
 
         // Loop around a number of times displaying the current (default option) time.
         int i = 0;
-        while ( i < maximumIterations
+        while (i < maximumIterations
                 && b.getInHours() >= startHour
-                && b.getInHours() <= endHour ){
+                && b.getInHours() <= endHour) {
 
             // Increment counter.
             i++;
@@ -71,13 +71,16 @@ public class BerlinClockPerpetualApp {
             //b.setWindowDisplayInMilliSeconds(15000);
 
             // Display the window.
-            try { b.displayInWindow();
+            System.out.println("Display");
+            try {
+                b.displayInWindow();
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
 
             // Wait a while before going around again.
-            try { sleep(intervalDelayMilliseconds);
+            try {
+                sleep(intervalDelayMilliseconds);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }

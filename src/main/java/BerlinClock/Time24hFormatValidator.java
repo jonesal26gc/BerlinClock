@@ -10,7 +10,7 @@ public class Time24hFormatValidator {
 
     private Pattern pattern;
     private Matcher matcher;
-    private static final String TIME12HOURS_PATTERN = "([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]";
+    private static final String TIME12HOURS_PATTERN = "(([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]|24:00:00)";
 
     public Time24hFormatValidator() {
         pattern = Pattern.compile(TIME12HOURS_PATTERN);

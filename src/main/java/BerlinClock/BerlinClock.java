@@ -27,10 +27,10 @@ public class BerlinClock {
 
     // Boolean indicators for each of the light bulbs.
     private boolean indSecondInterval;
-    private boolean [] ind5HrIntervals = new boolean [4];
-    private boolean [] ind1HrIntervals = new boolean [4];
-    private boolean [] ind5MinIntervals = new boolean [11];
-    private boolean [] ind1MinIntervals = new boolean [4];
+    private boolean[] ind5HrIntervals = new boolean[4];
+    private boolean[] ind1HrIntervals = new boolean[4];
+    private boolean[] ind5MinIntervals = new boolean[11];
+    private boolean[] ind1MinIntervals = new boolean[4];
 
     // The output characters.
     private static final String RED_CHAR = "R";
@@ -47,12 +47,13 @@ public class BerlinClock {
             , "Century Gothic", "Comic Sans MS", "Courier New"
             , "Forte", "Garamond", "Monospaced", "Segoe UI"
             , "Times New Roman", "Trebuchet MS", "Serif"};
-    private static final int [] sizeOptions = {8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28};
+    private static final int[] sizeOptions = {8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28};
     private int windowDisplayInMilliSeconds = 15000;
 
     private static final int REVISION = 1;
 
-    public BerlinClock() {}
+    public BerlinClock() {
+    }
 
     public BerlinClock(String parameterTime) {
         /*********************************************************************************
@@ -60,7 +61,7 @@ public class BerlinClock {
          *********************************************************************************/
 
         try {
-            if ( parameterTime.equals("") ) {
+            if (parameterTime.equals("")) {
                 defaultTime();
             } else {
                 setParameterTime(parameterTime);
@@ -76,7 +77,9 @@ public class BerlinClock {
         return parameterTime;
     }
 
-    public int getInHours() { return inHours; }
+    public int getInHours() {
+        return inHours;
+    }
 
     public boolean getIndSecondInterval() {
         return indSecondInterval;
@@ -110,14 +113,14 @@ public class BerlinClock {
          * Set the current time, ensuring that it's valid.
          *********************************************************************************/
         Time24hFormatValidator time24hFormatValidator = new Time24hFormatValidator();
-        if ( time24hFormatValidator.validate(parameterTime) ) {
+        if (time24hFormatValidator.validate(parameterTime)) {
             // set the current times.
             this.parameterTime = parameterTime;
 
             // Derive the other attributes from this time.
-            this.inHours = Integer.parseInt(parameterTime.substring(0,2));
-            this.inMinutes = Integer.parseInt(parameterTime.substring(3,5));
-            this.inSeconds = Integer.parseInt(parameterTime.substring(6,8));
+            this.inHours = Integer.parseInt(parameterTime.substring(0, 2));
+            this.inMinutes = Integer.parseInt(parameterTime.substring(3, 5));
+            this.inSeconds = Integer.parseInt(parameterTime.substring(6, 8));
         } else {
             throw new Exception("Invalid time provided an input parameter.");
         }
@@ -147,40 +150,47 @@ public class BerlinClock {
          *********************************************************************************/
 
         // Set the odd/even second indicator.
-        indSecondInterval = ( ( ( inSeconds / 2) * 2 ) == inSeconds );
+        indSecondInterval = ! (((inSeconds / 2) * 2) == inSeconds);
 
         // Set 5hr interval indicators.
-        int accumulatedHours = 0;
-        for ( int x = 0 ; x < ind5HrIntervals.length ; x++) {
-            if  (((x + 1) * 5) <= inHours) {
+        int numberOf5HrIntervals = inHours / 5;
+        for (int x = 0; x < ind5HrIntervals.length; x++) {
+            if ((numberOf5HrIntervals) >= (x + 1)) {
                 ind5HrIntervals[x] = true;
-                accumulatedHours=accumulatedHours+5;
             } else {
                 ind5HrIntervals[x] = false;
             }
         }
 
         // Set 1hr interval indicators.
-        for ( int x = 0 ; x < ind1HrIntervals.length ; x++) {
-            ind1HrIntervals[x] = (x + 1) <= ( inHours - accumulatedHours );
+        int numberOf1HrIntervals = inHours % 5;
+        for (int x = 0; x < ind1HrIntervals.length; x++) {
+            if ((numberOf1HrIntervals) >= (x + 1)) {
+                ind1HrIntervals[x] = true;
+            } else {
+                ind1HrIntervals[x] = false;
+            }
         }
 
         // Set 5min interval indicators.
-        int accumulatedMinutes = 0;
-        for ( int x = 0 ; x < ind5MinIntervals.length ; x++) {
-            if (((x + 1) * 5) <= inMinutes) {
-                ind5MinIntervals[x] = true ;
-                accumulatedMinutes=accumulatedMinutes+5;
+        int numberOf5MinIntervals = inMinutes / 5;
+        for (int x = 0; x < ind5MinIntervals.length; x++) {
+            if ((numberOf5MinIntervals) >= (x + 1)) {
+                ind5MinIntervals[x] = true;
             } else {
-                ind5MinIntervals[x] = false ;
+                ind5MinIntervals[x] = false;
             }
         }
 
         // Set 1min interval indicators.
-        for ( int x = 0 ; x < ind1MinIntervals.length ; x++) {
-            ind1MinIntervals[x] = (x + 1) <= ( inMinutes - accumulatedMinutes );
+        int numberOf1MinIntervals = inMinutes % 5;
+        for (int x = 0; x < ind1MinIntervals.length; x++) {
+            if ((numberOf1MinIntervals) >= (x + 1)) {
+                ind1MinIntervals[x] = true;
+            } else {
+                ind1MinIntervals[x] = false;
+            }
         }
-
     }
 
     @MethodInfo(author = "TonyJ", comments = "display", date = "2016-12-13", revision = 2)
@@ -194,10 +204,10 @@ public class BerlinClock {
          *********************************************************************************/
 
         System.out.print(formatSecondBox(indSecondInterval));
-        System.out.print(formatFourBoxes(Boolean.TRUE,ind5HrIntervals));
-        System.out.print(formatFourBoxes(Boolean.TRUE,ind1HrIntervals));
+        System.out.print(formatFourBoxes(Boolean.TRUE, ind5HrIntervals));
+        System.out.print(formatFourBoxes(Boolean.TRUE, ind1HrIntervals));
         System.out.print(formatElevenBoxes(ind5MinIntervals));
-        System.out.print(formatFourBoxes(Boolean.FALSE,ind1MinIntervals));
+        System.out.print(formatFourBoxes(Boolean.FALSE, ind1MinIntervals));
 
         return Boolean.TRUE;
     }
@@ -213,12 +223,12 @@ public class BerlinClock {
         labelField.setHorizontalAlignment(SwingConstants.CENTER);
 
         // Declare a text area field.
-        JTextArea textField = new JTextArea(17,36);
+        JTextArea textField = new JTextArea(17, 36);
         textField.append(formatSecondBox(indSecondInterval));
-        textField.append(formatFourBoxes(Boolean.TRUE,ind5HrIntervals));
-        textField.append(formatFourBoxes(Boolean.TRUE,ind1HrIntervals));
+        textField.append(formatFourBoxes(Boolean.TRUE, ind5HrIntervals));
+        textField.append(formatFourBoxes(Boolean.TRUE, ind1HrIntervals));
         textField.append(formatElevenBoxes(ind5MinIntervals));
-        textField.append(formatFourBoxes(Boolean.FALSE,ind1MinIntervals));
+        textField.append(formatFourBoxes(Boolean.FALSE, ind1MinIntervals));
         textField.setEditable(false);
         textField.setFont(new Font(fontOptions[7], Font.BOLD, sizeOptions[4]));
 
@@ -241,7 +251,7 @@ public class BerlinClock {
 
     public boolean displayInPane() throws InterruptedException {
         /*********************************************************************************
-         * Display the Berlin Clock in a new window.
+         * Display the Berlin Clock in a new window with colours.
          *********************************************************************************/
 
         // Declare a label field.
@@ -253,17 +263,17 @@ public class BerlinClock {
 
         // Concatenate the clock output.
         String printString = formatSecondBox(indSecondInterval) +
-                formatFourBoxes(Boolean.TRUE,ind5HrIntervals) +
-                formatFourBoxes(Boolean.TRUE,ind1HrIntervals) +
+                formatFourBoxes(Boolean.TRUE, ind5HrIntervals) +
+                formatFourBoxes(Boolean.TRUE, ind1HrIntervals) +
                 formatElevenBoxes(ind5MinIntervals) +
-                formatFourBoxes(Boolean.FALSE,ind1MinIntervals);
+                formatFourBoxes(Boolean.FALSE, ind1MinIntervals);
 
         // Loop through each characters and set the colour and revised shape to
         // provide a larger block.
-        printString = printString.replace("  R  ","RRRRR").replace("  Y  ","YYYYY");
+        printString = printString.replace("  R  ", "RRRRR").replace("  Y  ", "YYYYY");
 
-        for ( int i=0 ; i< (printString.length()); i++){
-            char x = ( printString.charAt(i));
+        for (int i = 0; i < (printString.length()); i++) {
+            char x = (printString.charAt(i));
             switch (x) {
                 case 'R':
                     appendToPane(textField, String.valueOf((char) 9608), Color.RED);
@@ -296,8 +306,10 @@ public class BerlinClock {
         return Boolean.TRUE;
     }
 
-    private void appendToPane(JTextPane tp, String msg, Color c)
-    {
+    private void appendToPane(JTextPane tp, String msg, Color c) {
+        /*****************************************************************
+         * Change the colour of each character as necessary.
+         */
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset;
         aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
@@ -310,7 +322,6 @@ public class BerlinClock {
         tp.setCharacterAttributes(aset, false);
         tp.replaceSelection(msg);
     }
-
 
     @MethodInfo(author = "TonyJ", comments = "formatSecondBox", date = "2016-12-13", revision = 2)
     public String formatSecondBox(boolean arg) {
@@ -330,7 +341,7 @@ public class BerlinClock {
         String outputLines = NEW_LINE;
         outputLines = outputLines.concat("                 * *" + NEW_LINE);
         outputLines = outputLines.concat("               *     *" + NEW_LINE);
-        outputLines = outputLines.concat("             *    "+displayChar+"    *" + NEW_LINE);
+        outputLines = outputLines.concat("             *    " + displayChar + "    *" + NEW_LINE);
         outputLines = outputLines.concat("               *     *" + NEW_LINE);
         outputLines = outputLines.concat("                 * *");
 
@@ -338,7 +349,7 @@ public class BerlinClock {
     }
 
     @MethodInfo(author = "TonyJ", comments = "formatFourBoxes", date = "2016-12-13", revision = 2)
-    public String formatFourBoxes(boolean hourIndicator, boolean [] args) {
+    public String formatFourBoxes(boolean hourIndicator, boolean[] args) {
         /*********************************************************************************
          * Format the image for either the Hour or Minutes where 4 boxes are required.
          * The purpose is provided in the parameters.
@@ -346,11 +357,11 @@ public class BerlinClock {
 
         // Create an array of string that will be displayed, based upon the ON/OFF status
         // and positioning.
-        String [] displayChar = new String[args.length];
+        String[] displayChar = new String[args.length];
 
-        for (int x = 0; x < args.length ; x++) {
+        for (int x = 0; x < args.length; x++) {
             if (args[x]) {
-                if ( hourIndicator ) {
+                if (hourIndicator) {
                     displayChar[x] = RED_CHAR;
                 } else {
                     displayChar[x] = YELLOW_CHAR;
@@ -364,32 +375,32 @@ public class BerlinClock {
         String outputLines = NEW_LINE;
         outputLines = outputLines.concat(
                 "╔═══════╗╔═══════╗╔═══════╗╔═══════╗" +
-                NEW_LINE);
-        for ( String x : displayChar ) {
-            outputLines = outputLines.concat("║   "+x+"   ║");
+                        NEW_LINE);
+        for (String x : displayChar) {
+            outputLines = outputLines.concat("║   " + x + "   ║");
         }
         outputLines = outputLines.concat(
                 NEW_LINE +
-                "╚═══════╝╚═══════╝╚═══════╝╚═══════╝");
+                        "╚═══════╝╚═══════╝╚═══════╝╚═══════╝");
 
         return outputLines;
     }
 
     @MethodInfo(author = "TonyJ", comments = "formatElevenBoxes", date = "2016-12-13", revision = 2)
-    public String formatElevenBoxes(boolean [] args) {
+    public String formatElevenBoxes(boolean[] args) {
         /*********************************************************************************
          * Format the image for the 5 minute intervals where eleven boxes are required.
          *********************************************************************************/
 
         // Create an array of string that will be displayed, based upon the ON/OFF status
         // and positioning.
-        String [] displayChar = new String [args.length];
+        String[] displayChar = new String[args.length];
 
         int y = 0;
-        for (int x = 0; x < args.length ; x++) {
+        for (int x = 0; x < args.length; x++) {
             y++;
             if (args[x]) {
-                if (y==3 | y==6 | y==9) {
+                if (y == 3 | y == 6 | y == 9) {
                     displayChar[x] = RED_CHAR;
                 } else {
                     displayChar[x] = YELLOW_CHAR;
@@ -403,20 +414,20 @@ public class BerlinClock {
         String outputLines = NEW_LINE;
         outputLines = outputLines.concat(
                 "╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗" +
-                NEW_LINE);
+                        NEW_LINE);
 
         y = 0;
-        for ( String x : displayChar ) {
+        for (String x : displayChar) {
             y++;
-            outputLines = outputLines.concat("║"+x+"║");
-            if (y==3 | y==6 | y==9) {
+            outputLines = outputLines.concat("║" + x + "║");
+            if (y == 3 | y == 6 | y == 9) {
                 outputLines = outputLines.concat(" ");
             }
         }
 
         outputLines = outputLines.concat(
                 NEW_LINE +
-                "╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝");
+                        "╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝");
 
         return outputLines;
     }

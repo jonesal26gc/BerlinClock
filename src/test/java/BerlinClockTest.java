@@ -27,7 +27,7 @@ public class BerlinClockTest {
         BerlinClock b = new BerlinClock("00:00:00");
         System.out.println(b.toString());
         assertEquals("Incorrect time","00:00:00",b.getParameterTime());
-        assertEquals("Second should be on", Boolean.TRUE, b.getIndSecondInterval());
+        assertEquals("Second should be on", Boolean.FALSE, b.getIndSecondInterval());
         assertArrayEquals("5hr should all be false"
                 ,new boolean[] {Boolean.FALSE,Boolean.FALSE,Boolean.FALSE,Boolean.FALSE}
                 ,b.getInd5HrIntervals());
@@ -49,7 +49,7 @@ public class BerlinClockTest {
         BerlinClock b = new BerlinClock("06:06:01");
         System.out.println(b.toString());
         assertEquals("Incorrect","06:06:01",b.getParameterTime());
-        assertEquals("Second should be off", Boolean.FALSE, b.getIndSecondInterval());
+        assertEquals("Second should be on", Boolean.TRUE, b.getIndSecondInterval());
         assertArrayEquals("First 5hr should be true"
                 ,new boolean[] {Boolean.TRUE,Boolean.FALSE,Boolean.FALSE,Boolean.FALSE}
                 ,b.getInd5HrIntervals());
@@ -71,7 +71,7 @@ public class BerlinClockTest {
         BerlinClock b = new BerlinClock("09:04:00");
         System.out.println(b.toString());
         assertEquals("Incorrect","09:04:00",b.getParameterTime());
-        assertEquals("Second should be on", Boolean.TRUE, b.getIndSecondInterval());
+        assertEquals("Second should be off", Boolean.FALSE, b.getIndSecondInterval());
         assertArrayEquals("First 5hr should be true"
                 ,new boolean[] {Boolean.TRUE,Boolean.FALSE,Boolean.FALSE,Boolean.FALSE}
                 ,b.getInd5HrIntervals());
@@ -93,7 +93,7 @@ public class BerlinClockTest {
         BerlinClock b = new BerlinClock("12:32:00");
         System.out.println(b.toString());
         assertEquals("Incorrect","12:32:00",b.getParameterTime());
-        assertEquals("Second should be on", Boolean.TRUE, b.getIndSecondInterval());
+        assertEquals("Second should be off", Boolean.FALSE, b.getIndSecondInterval());
         assertArrayEquals("First/second 5hr should be true"
                 ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.FALSE,Boolean.FALSE}
                 ,b.getInd5HrIntervals());
@@ -115,7 +115,7 @@ public class BerlinClockTest {
         BerlinClock b = new BerlinClock("23:59:59");
         System.out.println(b.toString());
         assertEquals("Incorrect","23:59:59",b.getParameterTime());
-        assertEquals("Second should be off", Boolean.FALSE, b.getIndSecondInterval());
+        assertEquals("Second should be on", Boolean.TRUE, b.getIndSecondInterval());
         assertArrayEquals("All 5hr should be true"
                 ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}
                 ,b.getInd5HrIntervals());
@@ -131,6 +131,32 @@ public class BerlinClockTest {
                 ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}
                 ,b.getInd1MinIntervals());
     }
+
+    @Test
+    public void should_show_240000() {
+        BerlinClock b = new BerlinClock("24:00:00");
+        System.out.println(b.toString());
+        assertEquals("Incorrect time","24:00:00",b.getParameterTime());
+        assertEquals("Second should be on", Boolean.FALSE, b.getIndSecondInterval());
+        assertArrayEquals("5hr should all be true"
+                ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}
+                ,b.getInd5HrIntervals());
+        assertArrayEquals("1hr should all be true"
+                ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}
+                ,b.getInd1HrIntervals());
+        assertArrayEquals("5min should all be false"
+                ,new boolean[] {Boolean.FALSE,Boolean.FALSE,Boolean.FALSE,Boolean.FALSE
+                        ,Boolean.FALSE,Boolean.FALSE,Boolean.FALSE,Boolean.FALSE
+                        ,Boolean.FALSE,Boolean.FALSE,Boolean.FALSE}
+                ,b.getInd5MinIntervals());
+        assertArrayEquals("1min should all be false"
+                ,new boolean[] {Boolean.FALSE,Boolean.FALSE,Boolean.FALSE,Boolean.FALSE}
+                ,b.getInd1MinIntervals());
+    }
+
+
+
+
 
     @Test
     public void should_display_second_on() {
@@ -202,6 +228,17 @@ public class BerlinClockTest {
         try {
             b.setWindowDisplayInMilliSeconds(500);
             assertTrue(b.displayInWindow());
+        } catch ( InterruptedException ex ) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Test
+    public void should_display_in_pane() {
+        BerlinClock b = new BerlinClock("24:00:00");
+        try {
+            b.setWindowDisplayInMilliSeconds(5000);
+            assertTrue(b.displayInPane());
         } catch ( InterruptedException ex ) {
             ex.printStackTrace();
         }
