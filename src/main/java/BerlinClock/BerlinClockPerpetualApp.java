@@ -31,8 +31,8 @@ public class BerlinClockPerpetualApp {
             int paramEndHour = Integer.parseInt(args[1]);
             int paramIntervalDelayMinutes = Integer.parseInt(args[2]);
             int paramMaximumIterations = Integer.parseInt(args[3]);
-            if (paramStartHour >= 8
-                    & paramEndHour <= 18
+            if (paramStartHour >= 0
+                    & paramEndHour <= 23
                     & paramIntervalDelayMinutes >= 0
                     & paramIntervalDelayMinutes <= 60
                     & paramMaximumIterations >= 0
@@ -73,7 +73,7 @@ public class BerlinClockPerpetualApp {
             // Display the window.
             System.out.println("Display");
             try {
-                b.displayInWindow();
+                b.displayInPane();
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
