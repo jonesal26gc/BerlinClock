@@ -271,6 +271,11 @@ public class BerlinClock {
         // Loop through each characters and set the colour and revised shape to
         // provide a larger block.
         printString = printString.replace("  R  ", "RRRRR").replace("  Y  ", "YYYYY");
+        if ( printString.contains("  YYYYY  ")) {
+            printString = printString.replace("  YYYYY  "," YYYYYYY ");
+            printString = printString.replace("*     *","* YYY *");
+            System.out.println("adjusting the second display");
+        }
 
         for (int i = 0; i < (printString.length()); i++) {
             char x = (printString.charAt(i));
