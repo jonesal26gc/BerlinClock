@@ -274,7 +274,6 @@ public class BerlinClock {
         if ( printString.contains("  YYYYY  ")) {
             printString = printString.replace("  YYYYY  "," YYYYYYY ");
             printString = printString.replace("*     *","* YYY *");
-            System.out.println("adjusting the second display");
         }
 
         for (int i = 0; i < (printString.length()); i++) {

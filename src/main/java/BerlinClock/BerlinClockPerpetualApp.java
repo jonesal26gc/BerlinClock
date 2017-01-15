@@ -71,7 +71,7 @@ public class BerlinClockPerpetualApp {
             //b.setWindowDisplayInMilliSeconds(15000);
 
             // Display the window.
-            System.out.println("Display");
+            System.out.println("Display @ " + b.getParameterTime());
             try {
                 b.displayInPane();
             } catch (InterruptedException ex) {
