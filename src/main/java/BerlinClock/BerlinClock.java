@@ -150,7 +150,7 @@ public class BerlinClock {
          *********************************************************************************/
 
         // Set the odd/even second indicator.
-        indSecondInterval = ! (((inSeconds / 2) * 2) == inSeconds);
+        indSecondInterval = !(((inSeconds / 2) * 2) == inSeconds);
 
         // Set 5hr interval indicators.
         int numberOf5HrIntervals = inHours / 5;
@@ -271,9 +271,9 @@ public class BerlinClock {
         // Loop through each characters and set the colour and revised shape to
         // provide a larger block.
         printString = printString.replace("  R  ", "RRRRR").replace("  Y  ", "YYYYY");
-        if ( printString.contains("  YYYYY  ")) {
-            printString = printString.replace("  YYYYY  "," YYYYYYY ");
-            printString = printString.replace("*     *","* YYY *");
+        if (printString.contains("  YYYYY  ")) {
+            printString = printString.replace("  YYYYY  ", " YYYYYYY ");
+            printString = printString.replace("*     *", "* YYY *");
         }
 
         for (int i = 0; i < (printString.length()); i++) {
