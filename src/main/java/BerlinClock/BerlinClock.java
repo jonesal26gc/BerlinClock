@@ -13,6 +13,8 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+
 public class BerlinClock {
     /*********************************************************************************
      * Display the time in the Berlin Clock format.
@@ -37,10 +39,6 @@ public class BerlinClock {
     private static final String YELLOW_CHAR = "Y";
     private static final String OFF_CHAR = " ";
     private static final String NEW_LINE = "\n";
-
-    //private static final String RED_CHAR = "\033[31;5;7mR\033[0m";
-    //private static final String YELLOW_CHAR = "\033[33;5;7mY\033[0m";
-    //private static final String OFF_CHAR = " ";
 
     // Font information.
     private static final String[] fontOptions = {"Serif", "Agency FB", "Arial", "Calibri", "Cambrian"
@@ -69,7 +67,6 @@ public class BerlinClock {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
         calculateIndicators();
     }
 
@@ -124,7 +121,6 @@ public class BerlinClock {
         } else {
             throw new Exception("Invalid time provided an input parameter.");
         }
-
     }
 
     @MethodInfo(author = "TonyJ", comments = "defaultTime", date = "2016-12-13", revision = 2)
@@ -140,7 +136,6 @@ public class BerlinClock {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
     }
 
     @MethodInfo(author = "TonyJ", comments = "calculateIndicators", date = "2016-12-13", revision = 2)
@@ -213,7 +208,7 @@ public class BerlinClock {
     }
 
     @MethodInfo(author = "TonyJ", comments = "displayInWindow", date = "2016-12-13", revision = 2)
-    public boolean displayInWindow() throws InterruptedException {
+    public void displayInWindow() throws InterruptedException {
         /*********************************************************************************
          * Display the Berlin Clock in a new window.
          *********************************************************************************/
@@ -234,7 +229,7 @@ public class BerlinClock {
 
         // Declare and open the frame.
         JFrame frame = new JFrame("Berlin Clock");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.getContentPane().add(labelField, BorderLayout.NORTH);
         frame.getContentPane().add(textField, BorderLayout.CENTER);
         frame.pack();
@@ -245,11 +240,9 @@ public class BerlinClock {
 
         // close the screen.
         frame.dispose();
-
-        return Boolean.TRUE;
     }
 
-    public boolean displayInPane() throws InterruptedException {
+    public void displayInPane() throws InterruptedException {
         /*********************************************************************************
          * Display the Berlin Clock in a new window with colours.
          *********************************************************************************/
@@ -295,7 +288,7 @@ public class BerlinClock {
 
         // Declare and open the frame.
         JFrame frame = new JFrame("Berlin Clock");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.getContentPane().add(labelField, BorderLayout.NORTH);
         frame.getContentPane().add(textField, BorderLayout.CENTER);
         frame.pack();
@@ -306,8 +299,6 @@ public class BerlinClock {
 
         // close the screen.
         frame.dispose();
-
-        return Boolean.TRUE;
     }
 
     private void appendToPane(JTextPane tp, String msg, Color c) {
@@ -361,17 +352,17 @@ public class BerlinClock {
 
         // Create an array of string that will be displayed, based upon the ON/OFF status
         // and positioning.
-        String[] displayChar = new String[args.length];
+        String[] characterInTheBoxes = new String[args.length];
 
-        for (int x = 0; x < args.length; x++) {
-            if (args[x]) {
+        for (int box = 0; box < args.length; box++) {
+            if (args[box]) {
                 if (hourIndicator) {
-                    displayChar[x] = RED_CHAR;
+                    characterInTheBoxes[box] = RED_CHAR;
                 } else {
-                    displayChar[x] = YELLOW_CHAR;
+                    characterInTheBoxes[box] = YELLOW_CHAR;
                 }
             } else {
-                displayChar[x] = OFF_CHAR;
+                characterInTheBoxes[box] = OFF_CHAR;
             }
         }
 
@@ -380,7 +371,7 @@ public class BerlinClock {
         outputLines = outputLines.concat(
                 "╔═══════╗╔═══════╗╔═══════╗╔═══════╗" +
                         NEW_LINE);
-        for (String x : displayChar) {
+        for (String x : characterInTheBoxes) {
             outputLines = outputLines.concat("║   " + x + "   ║");
         }
         outputLines = outputLines.concat(
@@ -454,7 +445,5 @@ public class BerlinClock {
                 "ind1HrIntervals=" + Arrays.toString(ind1HrIntervals) + NEW_LINE +
                 "ind5MinIntervals=" + Arrays.toString(ind5MinIntervals) + NEW_LINE +
                 "ind1MinIntervals=" + Arrays.toString(ind1MinIntervals);
-
     }
-
 }
