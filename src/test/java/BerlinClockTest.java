@@ -166,7 +166,7 @@ public class BerlinClockTest {
                     "             *    "+"Y"+"    *" + NEW_LINE +
                     "               *     *" + NEW_LINE +
                     "                 * *")
-                ,new BerlinClock().formatSecondBox(Boolean.TRUE));
+                ,new BerlinClock().buildBoxForSecondDisplay(Boolean.TRUE).toString());
     }
 
     @Test
@@ -176,8 +176,8 @@ public class BerlinClockTest {
                     "╔═══════╗╔═══════╗╔═══════╗╔═══════╗" + NEW_LINE +
                     "║   R   ║║   R   ║║   R   ║║   R   ║" + NEW_LINE +
                     "╚═══════╝╚═══════╝╚═══════╝╚═══════╝")
-                ,new BerlinClock().formatFourBoxes(Boolean.TRUE
-                ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}));
+                ,new BerlinClock().buildBoxForFourBoxDisplay(Boolean.TRUE
+                ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}).toString());
     }
 
     @Test
@@ -187,8 +187,8 @@ public class BerlinClockTest {
                     "╔═══════╗╔═══════╗╔═══════╗╔═══════╗" + NEW_LINE +
                     "║   R   ║║   R   ║║   R   ║║   R   ║" + NEW_LINE +
                     "╚═══════╝╚═══════╝╚═══════╝╚═══════╝")
-                ,new BerlinClock().formatFourBoxes(Boolean.TRUE
-                ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}));
+                ,new BerlinClock().buildBoxForFourBoxDisplay(Boolean.TRUE
+                ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}).toString());
     }
 
     @Test
@@ -198,10 +198,10 @@ public class BerlinClockTest {
                     "╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗" + NEW_LINE +
                     "║Y║║Y║║R║ ║Y║║Y║║R║ ║Y║║Y║║R║ ║Y║║Y║" + NEW_LINE +
                     "╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝")
-                ,new BerlinClock().formatElevenBoxes(new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE
+                ,new BerlinClock().buildBoxForFifteenMinuteBoxDisplay(new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE
                         ,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE
                         ,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE
-                        ,Boolean.TRUE,Boolean.TRUE}));
+                        ,Boolean.TRUE,Boolean.TRUE}).toString());
     }
 
     @Test
@@ -211,15 +211,15 @@ public class BerlinClockTest {
                     "╔═══════╗╔═══════╗╔═══════╗╔═══════╗" + NEW_LINE +
                     "║   Y   ║║   Y   ║║   Y   ║║   Y   ║" + NEW_LINE +
                     "╚═══════╝╚═══════╝╚═══════╝╚═══════╝")
-                ,new BerlinClock().formatFourBoxes(Boolean.FALSE
-                        ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}));
+                ,new BerlinClock().buildBoxForFourBoxDisplay(Boolean.FALSE
+                        ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}).toString());
     }
 
     @Test
     public void should_display_on_console() {
         BerlinClock b = new BerlinClock("20:00:00");
-        b.calculateIndicators();
-        assertTrue(b.display());
+        b.setLampIndicators();
+        b.display();
     }
 
     @Test
@@ -227,7 +227,7 @@ public class BerlinClockTest {
         BerlinClock b = new BerlinClock("20:00:00");
         try {
             b.setWindowDisplayInMilliSeconds(500);
-            assertTrue(b.displayInWindow());
+            b.displayInWindow();
         } catch ( InterruptedException ex ) {
             ex.printStackTrace();
         }
@@ -238,7 +238,7 @@ public class BerlinClockTest {
         BerlinClock b = new BerlinClock("24:00:00");
         try {
             b.setWindowDisplayInMilliSeconds(5000);
-            assertTrue(b.displayInPane());
+            b.displayInPane();
         } catch ( InterruptedException ex ) {
             ex.printStackTrace();
         }

@@ -16,6 +16,7 @@ import java.util.Calendar;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class BerlinClock {
+
     /*********************************************************************************
      * Display the time in the Berlin Clock format.
      *********************************************************************************/
@@ -35,10 +36,13 @@ public class BerlinClock {
     private boolean[] ind1MinIntervals = new boolean[4];
 
     // The output characters.
-    private static final String RED_CHAR = "R";
-    private static final String YELLOW_CHAR = "Y";
-    private static final String OFF_CHAR = " ";
+    private static final char RED_CHAR = 'R';
+    private static final char YELLOW_CHAR = 'Y';
+    private static final char OFF_CHAR = ' ';
     private static final String NEW_LINE = "\n";
+    private static final int [] FIFTEEN_MINUTE_INTERVALS = new int [] {3,6,9};
+    public static final boolean HOUR_INDICATOR = true;
+    private static final boolean NON_HOUR_INDICATOR = false;
 
     // Font information.
     private static final String[] fontOptions = {"Serif", "Agency FB", "Arial", "Calibri", "Cambrian"
@@ -67,7 +71,7 @@ public class BerlinClock {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        calculateIndicators();
+        setLampIndicators();
     }
 
     public String getParameterTime() {
@@ -138,14 +142,11 @@ public class BerlinClock {
         }
     }
 
-    @MethodInfo(author = "TonyJ", comments = "calculateIndicators", date = "2016-12-13", revision = 2)
-    public void calculateIndicators() {
-        /*********************************************************************************
-         * Set indicators corresponding to all the bulbs that must be lit for the time.
-         *********************************************************************************/
+    @MethodInfo(author = "TonyJ", comments = "setLampIndicators", date = "2016-12-13", revision = 2)
+    public void setLampIndicators() {
 
         // Set the odd/even second indicator.
-        indSecondInterval = ! (((inSeconds / 2) * 2) == inSeconds);
+        indSecondInterval = !(((inSeconds / 2) * 2) == inSeconds);
 
         // Set 5hr interval indicators.
         int numberOf5HrIntervals = inHours / 5;
@@ -193,18 +194,16 @@ public class BerlinClock {
     // The following method of display should no longer be used.
     // Rather, use the pop-up window instead.
     @Deprecated     // states that this method is "old hat" !
-    public boolean display() {
+    public void display() {
         /*********************************************************************************
          * Display the Berlin Clock.
          *********************************************************************************/
 
-        System.out.print(formatSecondBox(indSecondInterval));
-        System.out.print(formatFourBoxes(Boolean.TRUE, ind5HrIntervals));
-        System.out.print(formatFourBoxes(Boolean.TRUE, ind1HrIntervals));
-        System.out.print(formatElevenBoxes(ind5MinIntervals));
-        System.out.print(formatFourBoxes(Boolean.FALSE, ind1MinIntervals));
-
-        return Boolean.TRUE;
+        System.out.print(buildBoxForSecondDisplay(indSecondInterval));
+        System.out.print(buildBoxForFourBoxDisplay(HOUR_INDICATOR, ind5HrIntervals));
+        System.out.print(buildBoxForFourBoxDisplay(HOUR_INDICATOR, ind1HrIntervals));
+        System.out.print(buildBoxForFifteenMinuteBoxDisplay(ind5MinIntervals));
+        System.out.print(buildBoxForFourBoxDisplay(NON_HOUR_INDICATOR, ind1MinIntervals));
     }
 
     @MethodInfo(author = "TonyJ", comments = "displayInWindow", date = "2016-12-13", revision = 2)
@@ -219,11 +218,11 @@ public class BerlinClock {
 
         // Declare a text area field.
         JTextArea textField = new JTextArea(17, 36);
-        textField.append(formatSecondBox(indSecondInterval));
-        textField.append(formatFourBoxes(Boolean.TRUE, ind5HrIntervals));
-        textField.append(formatFourBoxes(Boolean.TRUE, ind1HrIntervals));
-        textField.append(formatElevenBoxes(ind5MinIntervals));
-        textField.append(formatFourBoxes(Boolean.FALSE, ind1MinIntervals));
+        textField.append(buildBoxForSecondDisplay(indSecondInterval).toString());
+        textField.append(buildBoxForFourBoxDisplay(Boolean.TRUE, ind5HrIntervals).toString());
+        textField.append(buildBoxForFourBoxDisplay(Boolean.TRUE, ind1HrIntervals).toString());
+        textField.append(buildBoxForFifteenMinuteBoxDisplay(ind5MinIntervals).toString());
+        textField.append(buildBoxForFourBoxDisplay(Boolean.FALSE, ind1MinIntervals).toString());
         textField.setEditable(false);
         textField.setFont(new Font(fontOptions[7], Font.BOLD, sizeOptions[4]));
 
@@ -255,18 +254,18 @@ public class BerlinClock {
         JTextPane textField = new JTextPane();
 
         // Concatenate the clock output.
-        String printString = formatSecondBox(indSecondInterval) +
-                formatFourBoxes(Boolean.TRUE, ind5HrIntervals) +
-                formatFourBoxes(Boolean.TRUE, ind1HrIntervals) +
-                formatElevenBoxes(ind5MinIntervals) +
-                formatFourBoxes(Boolean.FALSE, ind1MinIntervals);
+        String printString = buildBoxForSecondDisplay(indSecondInterval).toString() +
+                buildBoxForFourBoxDisplay(Boolean.TRUE, ind5HrIntervals).toString() +
+                buildBoxForFourBoxDisplay(Boolean.TRUE, ind1HrIntervals).toString() +
+                buildBoxForFifteenMinuteBoxDisplay(ind5MinIntervals).toString() +
+                buildBoxForFourBoxDisplay(Boolean.FALSE, ind1MinIntervals).toString();
 
         // Loop through each characters and set the colour and revised shape to
         // provide a larger block.
         printString = printString.replace("  R  ", "RRRRR").replace("  Y  ", "YYYYY");
-        if ( printString.contains("  YYYYY  ")) {
-            printString = printString.replace("  YYYYY  "," YYYYYYY ");
-            printString = printString.replace("*     *","* YYY *");
+        if (printString.contains("  YYYYY  ")) {
+            printString = printString.replace("  YYYYY  ", " YYYYYYY ");
+            printString = printString.replace("*     *", "* YYY *");
         }
 
         for (int i = 0; i < (printString.length()); i++) {
@@ -318,122 +317,111 @@ public class BerlinClock {
         tp.replaceSelection(msg);
     }
 
-    @MethodInfo(author = "TonyJ", comments = "formatSecondBox", date = "2016-12-13", revision = 2)
-    public String formatSecondBox(boolean arg) {
-        /*********************************************************************************
-         * Format the image for the second.
-         *********************************************************************************/
-
-        // Set the output character.
-        String displayChar;
-        if (arg) {
-            displayChar = YELLOW_CHAR;
-        } else {
-            displayChar = OFF_CHAR;
-        }
-
-        // Format the output to a string.
-        String outputLines = NEW_LINE;
-        outputLines = outputLines.concat("                 * *" + NEW_LINE);
-        outputLines = outputLines.concat("               *     *" + NEW_LINE);
-        outputLines = outputLines.concat("             *    " + displayChar + "    *" + NEW_LINE);
-        outputLines = outputLines.concat("               *     *" + NEW_LINE);
-        outputLines = outputLines.concat("                 * *");
-
-        return outputLines;
+    @MethodInfo(author = "TonyJ", comments = "buildBoxForSecondDisplay", date = "2016-12-13", revision = 2)
+    public StringBuffer buildBoxForSecondDisplay(boolean isLightOnIndicator) {
+        return new StringBuffer()
+                .append(NEW_LINE)
+                .append("                 * *")
+                .append(NEW_LINE)
+                .append("               *     *")
+                .append(NEW_LINE)
+                .append("             *    ")
+                .append(getLampCharacterOfSecond(isLightOnIndicator))
+                .append("    *")
+                .append(NEW_LINE)
+                .append("               *     *")
+                .append(NEW_LINE)
+                .append("                 * *");
     }
 
-    @MethodInfo(author = "TonyJ", comments = "formatFourBoxes", date = "2016-12-13", revision = 2)
-    public String formatFourBoxes(boolean hourIndicator, boolean[] args) {
-        /*********************************************************************************
-         * Format the image for either the Hour or Minutes where 4 boxes are required.
-         * The purpose is provided in the parameters.
-         *********************************************************************************/
-
-        // Create an array of string that will be displayed, based upon the ON/OFF status
-        // and positioning.
-        String[] characterInTheBoxes = new String[args.length];
-
-        for (int box = 0; box < args.length; box++) {
-            if (args[box]) {
-                if (hourIndicator) {
-                    characterInTheBoxes[box] = RED_CHAR;
-                } else {
-                    characterInTheBoxes[box] = YELLOW_CHAR;
-                }
-            } else {
-                characterInTheBoxes[box] = OFF_CHAR;
-            }
+    private char getLampCharacterOfSecond(boolean isLightOnIndicator) {
+        if (isLightOnIndicator) {
+            return YELLOW_CHAR;
         }
-
-        // Format the output to a string.
-        String outputLines = NEW_LINE;
-        outputLines = outputLines.concat(
-                "╔═══════╗╔═══════╗╔═══════╗╔═══════╗" +
-                        NEW_LINE);
-        for (String x : characterInTheBoxes) {
-            outputLines = outputLines.concat("║   " + x + "   ║");
-        }
-        outputLines = outputLines.concat(
-                NEW_LINE +
-                        "╚═══════╝╚═══════╝╚═══════╝╚═══════╝");
-
-        return outputLines;
+        return OFF_CHAR;
     }
 
-    @MethodInfo(author = "TonyJ", comments = "formatElevenBoxes", date = "2016-12-13", revision = 2)
-    public String formatElevenBoxes(boolean[] args) {
-        /*********************************************************************************
-         * Format the image for the 5 minute intervals where eleven boxes are required.
-         *********************************************************************************/
+    @MethodInfo(author = "TonyJ", comments = "buildBoxForFourBoxDisplay", date = "2016-12-13", revision = 2)
+    public StringBuffer buildBoxForFourBoxDisplay(boolean hourIndicator, boolean[] isLightOnIndicators) {
+        StringBuffer stringBuffer = new StringBuffer();
 
-        // Create an array of string that will be displayed, based upon the ON/OFF status
-        // and positioning.
-        String[] displayChar = new String[args.length];
+        stringBuffer
+                .append(NEW_LINE)
+                .append("╔═══════╗╔═══════╗╔═══════╗╔═══════╗")
+                .append(NEW_LINE);
 
-        int y = 0;
-        for (int x = 0; x < args.length; x++) {
-            y++;
-            if (args[x]) {
-                if (y == 3 | y == 6 | y == 9) {
-                    displayChar[x] = RED_CHAR;
-                } else {
-                    displayChar[x] = YELLOW_CHAR;
-                }
+        for (boolean isLightOnIndicator : isLightOnIndicators) {
+            stringBuffer
+                    .append("║   ")
+                    .append(getLampCharacterOfFourBoxes(hourIndicator, isLightOnIndicator))
+                    .append("   ║");
+        }
+
+        stringBuffer.append(NEW_LINE)
+                .append("╚═══════╝╚═══════╝╚═══════╝╚═══════╝");
+
+        return stringBuffer;
+    }
+
+    private char getLampCharacterOfFourBoxes(boolean hourIndicator, boolean isLightOnIndicator) {
+        if (isLightOnIndicator) {
+            if (hourIndicator) {
+                return RED_CHAR;
             } else {
-                displayChar[x] = OFF_CHAR;
+                return YELLOW_CHAR;
+            }
+        }
+        return OFF_CHAR;
+    }
+
+    @MethodInfo(author = "TonyJ", comments = "buildBoxForFifteenMinuteBoxDisplay", date = "2016-12-13", revision = 2)
+    public StringBuffer buildBoxForFifteenMinuteBoxDisplay(boolean[] isLightOnIndicators) {
+        StringBuffer stringBuffer = new StringBuffer();
+
+        stringBuffer.append(NEW_LINE)
+                .append("╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗")
+                .append(NEW_LINE);
+
+        int lampNumber = 0;
+        for (boolean isLightOnIndicator : isLightOnIndicators) {
+            lampNumber++;
+            stringBuffer.append("║")
+                    .append(getLampCharacterOfElevenBoxes(isLightOnIndicator, lampNumber))
+                    .append("║");
+            if (isFifteenMinuteInterval(lampNumber)) {
+                stringBuffer.append(" ");
             }
         }
 
-        // Format the output to a string.
-        String outputLines = NEW_LINE;
-        outputLines = outputLines.concat(
-                "╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗" +
-                        NEW_LINE);
+        stringBuffer.append(NEW_LINE)
+                .append("╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝");
 
-        y = 0;
-        for (String x : displayChar) {
-            y++;
-            outputLines = outputLines.concat("║" + x + "║");
-            if (y == 3 | y == 6 | y == 9) {
-                outputLines = outputLines.concat(" ");
+        return stringBuffer;
+    }
+
+    private char getLampCharacterOfElevenBoxes(boolean isLightOnIndicator, int lampNumber) {
+        if (isLightOnIndicator) {
+            if (isFifteenMinuteInterval(lampNumber)) {
+                return RED_CHAR;
+            } else {
+                return YELLOW_CHAR;
             }
         }
+        return OFF_CHAR;
+    }
 
-        outputLines = outputLines.concat(
-                NEW_LINE +
-                        "╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝");
-
-        return outputLines;
+    private boolean isFifteenMinuteInterval(int lampNumber) {
+        for (int fifteenMinuteInterval : FIFTEEN_MINUTE_INTERVALS) {
+            if (lampNumber == fifteenMinuteInterval) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override // States that this method overrides that of a super-class (i.e. Object.toString().
     @MethodInfo(author = "TonyJ", comments = "toString", date = "2016-12-13", revision = REVISION)
     public String toString() {
-        /*********************************************************************************
-         * Show all the values.
-         *********************************************************************************/
-
         return "BerlinClock.BerlinClock{" +
                 "parameterTime='" + parameterTime + '\'' +
                 ", inHours=" + inHours +
