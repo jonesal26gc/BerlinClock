@@ -1,6 +1,6 @@
 package BerlinClock;
 
-@SuppressWarnings("deprecation")   // switches off the warning for the BerlinClock.BerlinClock.display() method.
+@SuppressWarnings("deprecation")   // switches off the warning for the BerlinClock.BerlinClock.displayInConsole() method.
 public class BerlinClockApp {
 
     public static final int DISPLAY_IN_MILLI_SECONDS = 5000;
@@ -16,12 +16,12 @@ public class BerlinClockApp {
         // Display the time that has been used.
         System.out.println(berlinClock.toString());
 
-        // Format the indicators and display the clock for the specified time.
-        berlinClock.display();
+        // Format the indicators and displayInConsole the clock for the specified time.
+        berlinClock.displayInConsole();
         try {
             berlinClock.setWindowDisplayInMilliSeconds(DISPLAY_IN_MILLI_SECONDS);
             //b.displayInWindow();
-            berlinClock.displayInPane();
+            berlinClock.displayInWindowWithColouring();
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
@@ -29,7 +29,7 @@ public class BerlinClockApp {
 
     private static BerlinClock createBerlinClock(String[] args) {
         if (args.length == 0) {
-            return new BerlinClock("");
+            return new BerlinClock();
         }
         return new BerlinClock(args[0]);
     }

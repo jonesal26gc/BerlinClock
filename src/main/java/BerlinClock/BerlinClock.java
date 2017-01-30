@@ -24,23 +24,22 @@ public class BerlinClock {
     private String parameterTime;
 
     // Values derived from the input time string.
-    private int inHours;
-    private int inMinutes;
-    private int inSeconds;
+    private int hours;
+    private int minutes;
+    private int seconds;
 
     // Boolean indicators for each of the light bulbs.
-    private boolean indSecondInterval;
-    private boolean[] ind5HrIntervals = new boolean[4];
-    private boolean[] ind1HrIntervals = new boolean[4];
-    private boolean[] ind5MinIntervals = new boolean[11];
-    private boolean[] ind1MinIntervals = new boolean[4];
+    private boolean lampOnSecondIndicator;
+    private boolean[] lampOn5HourIndicators = new boolean[4];
+    private boolean[] lampOn1hourIndicators = new boolean[4];
+    private boolean[] lampOn5MinuteIndicators = new boolean[11];
+    private boolean[] lampOn1MinuteIndicators = new boolean[4];
 
-    // The output characters.
     private static final char RED_CHAR = 'R';
     private static final char YELLOW_CHAR = 'Y';
     private static final char OFF_CHAR = ' ';
     private static final String NEW_LINE = "\n";
-    private static final int [] FIFTEEN_MINUTE_INTERVALS = new int [] {3,6,9};
+    private static final int[] FIVE_MINUTE_EXCEPTION_INTERVALS = new int[]{3, 6, 9};
     public static final boolean HOUR_INDICATOR = true;
     private static final boolean NON_HOUR_INDICATOR = false;
 
@@ -55,51 +54,53 @@ public class BerlinClock {
     private static final int REVISION = 1;
 
     public BerlinClock() {
+        defaultTimeToNow();
+        setLampOnIndicators();
     }
 
     public BerlinClock(String parameterTime) {
-        /*********************************************************************************
-         * This constructor sets the time and the clock.
-         *********************************************************************************/
-
         try {
-            if (parameterTime.equals("")) {
-                defaultTime();
-            } else {
-                setParameterTime(parameterTime);
-            }
+            setParameterTime(parameterTime);
+            setLampOnIndicators();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        setLampIndicators();
     }
 
     public String getParameterTime() {
         return parameterTime;
     }
 
-    public int getInHours() {
-        return inHours;
+    public int getHours() {
+        return hours;
     }
 
-    public boolean getIndSecondInterval() {
-        return indSecondInterval;
+    public int getMinutes() {
+        return minutes;
     }
 
-    public boolean[] getInd5HrIntervals() {
-        return ind5HrIntervals;
+    public int getSeconds() {
+        return seconds;
     }
 
-    public boolean[] getInd1HrIntervals() {
-        return ind1HrIntervals;
+    public boolean getLampOnSecondIndicator() {
+        return lampOnSecondIndicator;
     }
 
-    public boolean[] getInd5MinIntervals() {
-        return ind5MinIntervals;
+    public boolean[] getLampOn5HourIndicators() {
+        return lampOn5HourIndicators;
     }
 
-    public boolean[] getInd1MinIntervals() {
-        return ind1MinIntervals;
+    public boolean[] getLampOn1hourIndicators() {
+        return lampOn1hourIndicators;
+    }
+
+    public boolean[] getLampOn5MinuteIndicators() {
+        return lampOn5MinuteIndicators;
+    }
+
+    public boolean[] getLampOn1MinuteIndicators() {
+        return lampOn1MinuteIndicators;
     }
 
     public void setWindowDisplayInMilliSeconds(int windowDisplayInMilliSeconds) {
@@ -119,20 +120,16 @@ public class BerlinClock {
             this.parameterTime = parameterTime;
 
             // Derive the other attributes from this time.
-            this.inHours = Integer.parseInt(parameterTime.substring(0, 2));
-            this.inMinutes = Integer.parseInt(parameterTime.substring(3, 5));
-            this.inSeconds = Integer.parseInt(parameterTime.substring(6, 8));
+            this.hours = Integer.parseInt(parameterTime.substring(0, 2));
+            this.minutes = Integer.parseInt(parameterTime.substring(3, 5));
+            this.seconds = Integer.parseInt(parameterTime.substring(6, 8));
         } else {
             throw new Exception("Invalid time provided an input parameter.");
         }
     }
 
-    @MethodInfo(author = "TonyJ", comments = "defaultTime", date = "2016-12-13", revision = 2)
-    public void defaultTime() {
-        /*********************************************************************************
-         * Set the current time, defaulting to the current time.
-         *********************************************************************************/
-
+    @MethodInfo(author = "TonyJ", comments = "defaultTimeToNow", date = "2016-12-13", revision = 2)
+    public void defaultTimeToNow() {
         try {
             DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
             Calendar cal1 = Calendar.getInstance();
@@ -142,68 +139,68 @@ public class BerlinClock {
         }
     }
 
-    @MethodInfo(author = "TonyJ", comments = "setLampIndicators", date = "2016-12-13", revision = 2)
-    public void setLampIndicators() {
+    @MethodInfo(author = "TonyJ", comments = "setLampOnIndicators", date = "2016-12-13", revision = 2)
+    public void setLampOnIndicators() {
 
         // Set the odd/even second indicator.
-        indSecondInterval = !(((inSeconds / 2) * 2) == inSeconds);
+        lampOnSecondIndicator = !(((seconds / 2) * 2) == seconds);
 
         // Set 5hr interval indicators.
-        int numberOf5HrIntervals = inHours / 5;
-        for (int x = 0; x < ind5HrIntervals.length; x++) {
+        int numberOf5HrIntervals = hours / 5;
+        for (int x = 0; x < lampOn5HourIndicators.length; x++) {
             if ((numberOf5HrIntervals) >= (x + 1)) {
-                ind5HrIntervals[x] = true;
+                lampOn5HourIndicators[x] = true;
             } else {
-                ind5HrIntervals[x] = false;
+                lampOn5HourIndicators[x] = false;
             }
         }
 
         // Set 1hr interval indicators.
-        int numberOf1HrIntervals = inHours % 5;
-        for (int x = 0; x < ind1HrIntervals.length; x++) {
+        int numberOf1HrIntervals = hours % 5;
+        for (int x = 0; x < lampOn1hourIndicators.length; x++) {
             if ((numberOf1HrIntervals) >= (x + 1)) {
-                ind1HrIntervals[x] = true;
+                lampOn1hourIndicators[x] = true;
             } else {
-                ind1HrIntervals[x] = false;
+                lampOn1hourIndicators[x] = false;
             }
         }
 
         // Set 5min interval indicators.
-        int numberOf5MinIntervals = inMinutes / 5;
-        for (int x = 0; x < ind5MinIntervals.length; x++) {
+        int numberOf5MinIntervals = minutes / 5;
+        for (int x = 0; x < lampOn5MinuteIndicators.length; x++) {
             if ((numberOf5MinIntervals) >= (x + 1)) {
-                ind5MinIntervals[x] = true;
+                lampOn5MinuteIndicators[x] = true;
             } else {
-                ind5MinIntervals[x] = false;
+                lampOn5MinuteIndicators[x] = false;
             }
         }
 
         // Set 1min interval indicators.
-        int numberOf1MinIntervals = inMinutes % 5;
-        for (int x = 0; x < ind1MinIntervals.length; x++) {
+        int numberOf1MinIntervals = minutes % 5;
+        for (int x = 0; x < lampOn1MinuteIndicators.length; x++) {
             if ((numberOf1MinIntervals) >= (x + 1)) {
-                ind1MinIntervals[x] = true;
+                lampOn1MinuteIndicators[x] = true;
             } else {
-                ind1MinIntervals[x] = false;
+                lampOn1MinuteIndicators[x] = false;
             }
         }
     }
 
-    @MethodInfo(author = "TonyJ", comments = "display", date = "2016-12-13", revision = 2)
+    @MethodInfo(author = "TonyJ", comments = "displayInConsole", date = "2016-12-13", revision = 2)
     // @deprecated
-    // The following method of display should no longer be used.
+    // The following method of displayInConsole should no longer be used.
     // Rather, use the pop-up window instead.
     @Deprecated     // states that this method is "old hat" !
-    public void display() {
+    public void displayInConsole() {
         /*********************************************************************************
          * Display the Berlin Clock.
          *********************************************************************************/
 
-        System.out.print(buildBoxForSecondDisplay(indSecondInterval));
-        System.out.print(buildBoxForFourBoxDisplay(HOUR_INDICATOR, ind5HrIntervals));
-        System.out.print(buildBoxForFourBoxDisplay(HOUR_INDICATOR, ind1HrIntervals));
-        System.out.print(buildBoxForFifteenMinuteBoxDisplay(ind5MinIntervals));
-        System.out.print(buildBoxForFourBoxDisplay(NON_HOUR_INDICATOR, ind1MinIntervals));
+        System.out.print(buildBoxForSecondDisplay(lampOnSecondIndicator));
+        System.out.print(buildBoxesForFourBoxDisplay(HOUR_INDICATOR, lampOn5HourIndicators));
+        System.out.print(buildBoxesForFourBoxDisplay(HOUR_INDICATOR, lampOn1hourIndicators));
+        System.out.print(buildBoxesForFiveMinuteDisplay(lampOn5MinuteIndicators));
+        System.out.print(buildBoxesForFourBoxDisplay(NON_HOUR_INDICATOR, lampOn1MinuteIndicators));
     }
 
     @MethodInfo(author = "TonyJ", comments = "displayInWindow", date = "2016-12-13", revision = 2)
@@ -218,11 +215,11 @@ public class BerlinClock {
 
         // Declare a text area field.
         JTextArea textField = new JTextArea(17, 36);
-        textField.append(buildBoxForSecondDisplay(indSecondInterval).toString());
-        textField.append(buildBoxForFourBoxDisplay(Boolean.TRUE, ind5HrIntervals).toString());
-        textField.append(buildBoxForFourBoxDisplay(Boolean.TRUE, ind1HrIntervals).toString());
-        textField.append(buildBoxForFifteenMinuteBoxDisplay(ind5MinIntervals).toString());
-        textField.append(buildBoxForFourBoxDisplay(Boolean.FALSE, ind1MinIntervals).toString());
+        textField.append(buildBoxForSecondDisplay(lampOnSecondIndicator).toString());
+        textField.append(buildBoxesForFourBoxDisplay(HOUR_INDICATOR, lampOn5HourIndicators).toString());
+        textField.append(buildBoxesForFourBoxDisplay(HOUR_INDICATOR, lampOn1hourIndicators).toString());
+        textField.append(buildBoxesForFiveMinuteDisplay(lampOn5MinuteIndicators).toString());
+        textField.append(buildBoxesForFourBoxDisplay(NON_HOUR_INDICATOR, lampOn1MinuteIndicators).toString());
         textField.setEditable(false);
         textField.setFont(new Font(fontOptions[7], Font.BOLD, sizeOptions[4]));
 
@@ -234,14 +231,14 @@ public class BerlinClock {
         frame.pack();
         frame.setVisible(true);
 
-        // Sleep for a while with the display on the screen.
+        // Sleep for a while with the displayInConsole on the screen.
         Thread.sleep(windowDisplayInMilliSeconds);
 
         // close the screen.
         frame.dispose();
     }
 
-    public void displayInPane() throws InterruptedException {
+    public void displayInWindowWithColouring() throws InterruptedException {
         /*********************************************************************************
          * Display the Berlin Clock in a new window with colours.
          *********************************************************************************/
@@ -254,11 +251,11 @@ public class BerlinClock {
         JTextPane textField = new JTextPane();
 
         // Concatenate the clock output.
-        String printString = buildBoxForSecondDisplay(indSecondInterval).toString() +
-                buildBoxForFourBoxDisplay(Boolean.TRUE, ind5HrIntervals).toString() +
-                buildBoxForFourBoxDisplay(Boolean.TRUE, ind1HrIntervals).toString() +
-                buildBoxForFifteenMinuteBoxDisplay(ind5MinIntervals).toString() +
-                buildBoxForFourBoxDisplay(Boolean.FALSE, ind1MinIntervals).toString();
+        String printString = buildBoxForSecondDisplay(lampOnSecondIndicator).toString() +
+                buildBoxesForFourBoxDisplay(HOUR_INDICATOR, lampOn5HourIndicators).toString() +
+                buildBoxesForFourBoxDisplay(HOUR_INDICATOR, lampOn1hourIndicators).toString() +
+                buildBoxesForFiveMinuteDisplay(lampOn5MinuteIndicators).toString() +
+                buildBoxesForFourBoxDisplay(NON_HOUR_INDICATOR, lampOn1MinuteIndicators).toString();
 
         // Loop through each characters and set the colour and revised shape to
         // provide a larger block.
@@ -293,7 +290,7 @@ public class BerlinClock {
         frame.pack();
         frame.setVisible(true);
 
-        // Sleep for a while with the display on the screen.
+        // Sleep for a while with the displayInConsole on the screen.
         Thread.sleep(windowDisplayInMilliSeconds);
 
         // close the screen.
@@ -318,7 +315,7 @@ public class BerlinClock {
     }
 
     @MethodInfo(author = "TonyJ", comments = "buildBoxForSecondDisplay", date = "2016-12-13", revision = 2)
-    public StringBuffer buildBoxForSecondDisplay(boolean isLightOnIndicator) {
+    public StringBuffer buildBoxForSecondDisplay(boolean lampOnIndicator) {
         return new StringBuffer()
                 .append(NEW_LINE)
                 .append("                 * *")
@@ -326,7 +323,7 @@ public class BerlinClock {
                 .append("               *     *")
                 .append(NEW_LINE)
                 .append("             *    ")
-                .append(getLampCharacterOfSecond(isLightOnIndicator))
+                .append(getLampCharacterOfSecondDisplay(lampOnIndicator))
                 .append("    *")
                 .append(NEW_LINE)
                 .append("               *     *")
@@ -334,15 +331,15 @@ public class BerlinClock {
                 .append("                 * *");
     }
 
-    private char getLampCharacterOfSecond(boolean isLightOnIndicator) {
-        if (isLightOnIndicator) {
+    private char getLampCharacterOfSecondDisplay(boolean lampOnIndicator) {
+        if (lampOnIndicator) {
             return YELLOW_CHAR;
         }
         return OFF_CHAR;
     }
 
-    @MethodInfo(author = "TonyJ", comments = "buildBoxForFourBoxDisplay", date = "2016-12-13", revision = 2)
-    public StringBuffer buildBoxForFourBoxDisplay(boolean hourIndicator, boolean[] isLightOnIndicators) {
+    @MethodInfo(author = "TonyJ", comments = "buildBoxesForFourBoxDisplay", date = "2016-12-13", revision = 2)
+    public StringBuffer buildBoxesForFourBoxDisplay(boolean hourIndicator, boolean[] lampOnIndicators) {
         StringBuffer stringBuffer = new StringBuffer();
 
         stringBuffer
@@ -350,10 +347,10 @@ public class BerlinClock {
                 .append("╔═══════╗╔═══════╗╔═══════╗╔═══════╗")
                 .append(NEW_LINE);
 
-        for (boolean isLightOnIndicator : isLightOnIndicators) {
+        for (boolean lampOnIndicator : lampOnIndicators) {
             stringBuffer
                     .append("║   ")
-                    .append(getLampCharacterOfFourBoxes(hourIndicator, isLightOnIndicator))
+                    .append(getLampCharacterForFourBoxDisplay(hourIndicator, lampOnIndicator))
                     .append("   ║");
         }
 
@@ -363,8 +360,8 @@ public class BerlinClock {
         return stringBuffer;
     }
 
-    private char getLampCharacterOfFourBoxes(boolean hourIndicator, boolean isLightOnIndicator) {
-        if (isLightOnIndicator) {
+    private char getLampCharacterForFourBoxDisplay(boolean hourIndicator, boolean lampOnIndicator) {
+        if (lampOnIndicator) {
             if (hourIndicator) {
                 return RED_CHAR;
             } else {
@@ -374,8 +371,8 @@ public class BerlinClock {
         return OFF_CHAR;
     }
 
-    @MethodInfo(author = "TonyJ", comments = "buildBoxForFifteenMinuteBoxDisplay", date = "2016-12-13", revision = 2)
-    public StringBuffer buildBoxForFifteenMinuteBoxDisplay(boolean[] isLightOnIndicators) {
+    @MethodInfo(author = "TonyJ", comments = "buildBoxesForFiveMinuteDisplay", date = "2016-12-13", revision = 2)
+    public StringBuffer buildBoxesForFiveMinuteDisplay(boolean[] lampOnIndicators) {
         StringBuffer stringBuffer = new StringBuffer();
 
         stringBuffer.append(NEW_LINE)
@@ -383,12 +380,12 @@ public class BerlinClock {
                 .append(NEW_LINE);
 
         int lampNumber = 0;
-        for (boolean isLightOnIndicator : isLightOnIndicators) {
+        for (boolean lampOnIndicator : lampOnIndicators) {
             lampNumber++;
             stringBuffer.append("║")
-                    .append(getLampCharacterOfElevenBoxes(isLightOnIndicator, lampNumber))
+                    .append(getLampCharacterForFiveMinuteDisplay(lampOnIndicator, lampNumber))
                     .append("║");
-            if (isFifteenMinuteInterval(lampNumber)) {
+            if (isFiveMinuteExceptionInterval(lampNumber)) {
                 stringBuffer.append(" ");
             }
         }
@@ -399,9 +396,9 @@ public class BerlinClock {
         return stringBuffer;
     }
 
-    private char getLampCharacterOfElevenBoxes(boolean isLightOnIndicator, int lampNumber) {
-        if (isLightOnIndicator) {
-            if (isFifteenMinuteInterval(lampNumber)) {
+    private char getLampCharacterForFiveMinuteDisplay(boolean lampOnIndicator, int lampNumber) {
+        if (lampOnIndicator) {
+            if (isFiveMinuteExceptionInterval(lampNumber)) {
                 return RED_CHAR;
             } else {
                 return YELLOW_CHAR;
@@ -410,9 +407,9 @@ public class BerlinClock {
         return OFF_CHAR;
     }
 
-    private boolean isFifteenMinuteInterval(int lampNumber) {
-        for (int fifteenMinuteInterval : FIFTEEN_MINUTE_INTERVALS) {
-            if (lampNumber == fifteenMinuteInterval) {
+    private boolean isFiveMinuteExceptionInterval(int lampNumber) {
+        for (int fiveMinuteExceptionInterval : FIVE_MINUTE_EXCEPTION_INTERVALS) {
+            if (lampNumber == fiveMinuteExceptionInterval) {
                 return true;
             }
         }
@@ -424,14 +421,14 @@ public class BerlinClock {
     public String toString() {
         return "BerlinClock.BerlinClock{" +
                 "parameterTime='" + parameterTime + '\'' +
-                ", inHours=" + inHours +
-                ", inMinutes=" + inMinutes +
-                ", inSeconds=" + inSeconds +
+                ", hours=" + hours +
+                ", minutes=" + minutes +
+                ", seconds=" + seconds +
                 '}' + NEW_LINE +
-                "indSecondInterval=" + indSecondInterval + NEW_LINE +
-                "ind5HrIntervals=" + Arrays.toString(ind5HrIntervals) + NEW_LINE +
-                "ind1HrIntervals=" + Arrays.toString(ind1HrIntervals) + NEW_LINE +
-                "ind5MinIntervals=" + Arrays.toString(ind5MinIntervals) + NEW_LINE +
-                "ind1MinIntervals=" + Arrays.toString(ind1MinIntervals);
+                "lampOnSecondIndicator=" + lampOnSecondIndicator + NEW_LINE +
+                "lampOn5HourIndicators=" + Arrays.toString(lampOn5HourIndicators) + NEW_LINE +
+                "lampOn1hourIndicators=" + Arrays.toString(lampOn1hourIndicators) + NEW_LINE +
+                "lampOn5MinuteIndicators=" + Arrays.toString(lampOn5MinuteIndicators) + NEW_LINE +
+                "lampOn1MinuteIndicators=" + Arrays.toString(lampOn1MinuteIndicators);
     }
 }

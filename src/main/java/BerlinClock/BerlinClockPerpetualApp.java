@@ -51,7 +51,7 @@ public class BerlinClockPerpetualApp {
 
         System.out.println("Starting");
 
-        BerlinClock b = new BerlinClock("");
+        BerlinClock b = new BerlinClock();
 
         if (intervalDelayMinutes != 0) {
             intervalDelayMilliseconds = intervalDelayMinutes * 60 * 1000;
@@ -60,20 +60,20 @@ public class BerlinClockPerpetualApp {
         // Loop around a number of times displaying the current (default option) time.
         int i = 0;
         while (i < maximumIterations
-                && b.getInHours() >= startHour
-                && b.getInHours() <= endHour) {
+                && b.getHours() >= startHour
+                && b.getHours() <= endHour) {
 
             // Increment counter.
             i++;
 
             // Set the time and the indicators.
-            b = new BerlinClock("");
+            b = new BerlinClock();
             //b.setWindowDisplayInMilliSeconds(15000);
 
             // Display the window.
             System.out.println("Display @ " + b.getParameterTime());
             try {
-                b.displayInPane();
+                b.displayInWindowWithColouring();
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
