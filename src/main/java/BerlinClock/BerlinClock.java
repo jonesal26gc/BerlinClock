@@ -17,38 +17,32 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class BerlinClock {
 
+    public static final boolean HOUR_INDICATOR = true;
     /*********************************************************************************
      * Display the time in the Berlin Clock format.
      *********************************************************************************/
     private static final int REVISION = 1;
-
-    private String parameterTime;
-
-    private int hours;
-    private int minutes;
-    private int seconds;
-
-    private boolean lampOnSecondIndicator;
-    private boolean[] lampOn5HourIndicators = new boolean[4];
-    private boolean[] lampOn1hourIndicators = new boolean[4];
-    private boolean[] lampOn5MinuteIndicators = new boolean[11];
-    private boolean[] lampOn1MinuteIndicators = new boolean[4];
-
     private static final char RED_CHAR = 'R';
     private static final char YELLOW_CHAR = 'Y';
     private static final char OFF_CHAR = ' ';
     private static final String NEW_LINE = "\n";
-
     private static final int[] FIVE_MINUTE_EXCEPTION_INTERVALS = new int[]{3, 6, 9};
-    public static final boolean HOUR_INDICATOR = true;
     private static final boolean NON_HOUR_INDICATOR = false;
-    private int windowDisplayInMilliSeconds = 15000;
-
     private static final String[] fontOptions = {"Serif", "Agency FB", "Arial", "Calibri", "Cambrian"
             , "Century Gothic", "Comic Sans MS", "Courier New"
             , "Forte", "Garamond", "Monospaced", "Segoe UI"
             , "Times New Roman", "Trebuchet MS", "Serif"};
     private static final int[] sizeOptions = {8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28};
+    private String parameterTime;
+    private int hours;
+    private int minutes;
+    private int seconds;
+    private boolean lampOnSecondIndicator;
+    private boolean[] lampOn5HourIndicators = new boolean[4];
+    private boolean[] lampOn1hourIndicators = new boolean[4];
+    private boolean[] lampOn5MinuteIndicators = new boolean[11];
+    private boolean[] lampOn1MinuteIndicators = new boolean[4];
+    private int windowDisplayInMilliSeconds = 15000;
 
     public BerlinClock() {
         defaultTimeToNow();
@@ -66,6 +60,22 @@ public class BerlinClock {
 
     public String getParameterTime() {
         return parameterTime;
+    }
+
+    @MethodInfo(author = "TonyJ", comments = "setParameterTime", date = "2016-12-13", revision = 2)
+    public void setParameterTime(String parameterTime) throws Exception {
+        Time24hFormatValidator time24hFormatValidator = new Time24hFormatValidator();
+        if (time24hFormatValidator.validate(parameterTime)) {
+            // set the current times.
+            this.parameterTime = parameterTime;
+
+            // Derive the other attributes from this time.
+            this.hours = Integer.parseInt(parameterTime.substring(0, 2));
+            this.minutes = Integer.parseInt(parameterTime.substring(3, 5));
+            this.seconds = Integer.parseInt(parameterTime.substring(6, 8));
+        } else {
+            throw new Exception("Invalid time provided an input parameter.");
+        }
     }
 
     public int getHours() {
@@ -106,22 +116,6 @@ public class BerlinClock {
         }
     }
 
-    @MethodInfo(author = "TonyJ", comments = "setParameterTime", date = "2016-12-13", revision = 2)
-    public void setParameterTime(String parameterTime) throws Exception {
-        Time24hFormatValidator time24hFormatValidator = new Time24hFormatValidator();
-        if (time24hFormatValidator.validate(parameterTime)) {
-            // set the current times.
-            this.parameterTime = parameterTime;
-
-            // Derive the other attributes from this time.
-            this.hours = Integer.parseInt(parameterTime.substring(0, 2));
-            this.minutes = Integer.parseInt(parameterTime.substring(3, 5));
-            this.seconds = Integer.parseInt(parameterTime.substring(6, 8));
-        } else {
-            throw new Exception("Invalid time provided an input parameter.");
-        }
-    }
-
     @MethodInfo(author = "TonyJ", comments = "defaultTimeToNow", date = "2016-12-13", revision = 2)
     public void defaultTimeToNow() {
         try {
@@ -144,49 +138,30 @@ public class BerlinClock {
 
     private void setLampOn1MinuteIndicators() {
         int numberOf1MinIntervals = minutes % 5;
-        for (int x = 0; x < lampOn1MinuteIndicators.length; x++) {
-            if ((numberOf1MinIntervals) >= (x + 1)) {
-                lampOn1MinuteIndicators[x] = true;
-            } else {
-                lampOn1MinuteIndicators[x] = false;
-            }
+        for (int indicator = 0; indicator < lampOn1MinuteIndicators.length; indicator++) {
+            lampOn1MinuteIndicators[indicator] = (indicator < numberOf1MinIntervals);
         }
     }
 
     private void setLampOn5MinuteIndicators() {
         int numberOf5MinIntervals = minutes / 5;
-        for (int x = 0; x < lampOn5MinuteIndicators.length; x++) {
-            if ((numberOf5MinIntervals) >= (x + 1)) {
-                lampOn5MinuteIndicators[x] = true;
-            } else {
-                lampOn5MinuteIndicators[x] = false;
-            }
+        for (int indicator = 0; indicator < lampOn5MinuteIndicators.length; indicator++) {
+            lampOn5MinuteIndicators[indicator] = (indicator < numberOf5MinIntervals);
         }
     }
 
     private void setLampOn1HourIndicators() {
         int numberOf1HrIntervals = hours % 5;
-        for (int x = 0; x < lampOn1hourIndicators.length; x++) {
-            if ((numberOf1HrIntervals) >= (x + 1)) {
-                lampOn1hourIndicators[x] = true;
-            } else {
-                lampOn1hourIndicators[x] = false;
-            }
+        for (int indicator = 0; indicator < lampOn1hourIndicators.length; indicator++) {
+            lampOn1hourIndicators[indicator] = (indicator < numberOf1HrIntervals);
         }
     }
 
     private void setLampOn5HourIndicators() {
         int numberOf5HrIntervals = hours / 5;
         for (int indicator = 0; indicator < lampOn5HourIndicators.length; indicator++) {
-            lampOn5HourIndicators[indicator] = setLampOnIndicator(numberOf5HrIntervals, indicator);
+            lampOn5HourIndicators[indicator] = (indicator < numberOf5HrIntervals);
         }
-    }
-
-    private boolean setLampOnIndicator(int numberOfIntervals, int indicator) {
-        if (indicator < numberOfIntervals) {
-            return true;
-        }
-        return false;
     }
 
     private void setLampOnSecondIndicator() {
@@ -199,10 +174,6 @@ public class BerlinClock {
     // Rather, use the pop-up window instead.
     @Deprecated     // states that this method is "old hat" !
     public void displayInConsole() {
-        /*********************************************************************************
-         * Display the Berlin Clock.
-         *********************************************************************************/
-
         System.out.print(buildBoxForSecondDisplay(lampOnSecondIndicator));
         System.out.print(buildBoxesForFourBoxDisplay(HOUR_INDICATOR, lampOn5HourIndicators));
         System.out.print(buildBoxesForFourBoxDisplay(HOUR_INDICATOR, lampOn1hourIndicators));
@@ -212,10 +183,6 @@ public class BerlinClock {
 
     @MethodInfo(author = "TonyJ", comments = "displayInWindow", date = "2016-12-13", revision = 2)
     public void displayInWindow() throws InterruptedException {
-        /*********************************************************************************
-         * Display the Berlin Clock in a new window.
-         *********************************************************************************/
-
         // Declare a label field.
         JLabel labelField = new JLabel(getParameterTime());
         labelField.setHorizontalAlignment(SwingConstants.CENTER);
@@ -246,10 +213,6 @@ public class BerlinClock {
     }
 
     public void displayInWindowWithColouring() throws InterruptedException {
-        /*********************************************************************************
-         * Display the Berlin Clock in a new window with colours.
-         *********************************************************************************/
-
         // Declare a label field.
         JLabel labelField = new JLabel(getParameterTime());
         labelField.setHorizontalAlignment(SwingConstants.CENTER);
@@ -305,9 +268,6 @@ public class BerlinClock {
     }
 
     private void appendToPane(JTextPane tp, String msg, Color c) {
-        /*****************************************************************
-         * Change the colour of each character as necessary.
-         */
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset;
         aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
