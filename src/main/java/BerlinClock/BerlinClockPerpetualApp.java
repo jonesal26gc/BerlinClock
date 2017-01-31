@@ -5,17 +5,14 @@ import static java.lang.Thread.sleep;
 public class BerlinClockPerpetualApp {
 
     public static void main(String[] args) {
+        int earliestStartHour = 9;
+        int latestEndHour = 17;
+        int intervalBetweenDisplaysInMinutes = 10;
+        int maximumIterationsForThisExecution = 100;
+        int intervalDelayMilliseconds = 60000;
         /*********************************************************************************
          * Run the Berlin Clock application perpetually.
          *********************************************************************************/
-
-        // The frequency of the update.
-        int startHour = 9;
-        int endHour = 17;
-        int intervalDelayMinutes = 10;
-        int maximumIterations = 100;
-
-        int intervalDelayMilliseconds = 60000;
 
         // Use the parameters to adjust the run characteristics.
         if (args.length >= 4) {
@@ -34,55 +31,44 @@ public class BerlinClockPerpetualApp {
                     & paramIntervalDelayMinutes <= 60
                     & paramMaximumIterations >= 0
                     & paramMaximumIterations <= 1000) {
-                startHour = paramStartHour;
-                endHour = paramEndHour;
-                intervalDelayMinutes = paramIntervalDelayMinutes;
-                maximumIterations = paramMaximumIterations;
+                earliestStartHour = paramStartHour;
+                latestEndHour = paramEndHour;
+                intervalBetweenDisplaysInMinutes = paramIntervalDelayMinutes;
+                maximumIterationsForThisExecution = paramMaximumIterations;
             } else {
-                System.out.println("Error in input parameters=" +
+                throw new RuntimeException("Error in input parameters=" +
                         paramStartHour + "/" + paramEndHour + "/" +
                         paramIntervalDelayMinutes + "/" + paramMaximumIterations);
-                return;
             }
         }
 
-        System.out.println("Starting");
-
-        BerlinClock b = new BerlinClock();
-
-        if (intervalDelayMinutes != 0) {
-            intervalDelayMilliseconds = intervalDelayMinutes * 60 * 1000;
+        if (intervalBetweenDisplaysInMinutes != 0) {
+            intervalDelayMilliseconds = intervalBetweenDisplaysInMinutes * 60 * 1000;
         }
 
-        // Loop around a number of times displaying the current (default option) time.
-        int i = 0;
-        while (i < maximumIterations
-                && b.getHours() >= startHour
-                && b.getHours() <= endHour) {
-
-            // Increment counter.
-            i++;
-
-            // Set the time and the indicators.
-            b = new BerlinClock();
-
-            // Display the window.
-            System.out.println("Display @ " + b.getParameterTime());
-            try {
-                StringBuffer console = new StringBuffer();
-                b.display(console);
-                new BerlinClockWindowDisplay().displayWithColour(b.getParameterTime(),console);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
+        for (int i = 1; true; i++) {
+            BerlinClock berlinClock = new BerlinClock();
+            if (i > maximumIterationsForThisExecution
+                    | berlinClock.getHours() < earliestStartHour
+                    | berlinClock.getHours() > latestEndHour) {
+                break;
             }
-
-            // Wait a while before going around again.
-            try {
-                sleep(intervalDelayMilliseconds);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
+            display(intervalDelayMilliseconds, berlinClock);
         }
-        System.out.println("Ending");
+    }
+
+    private static void display(int intervalDelayMilliseconds, BerlinClock berlinClock) {
+        System.out.println("Display @ " + berlinClock.getParameterTime());
+        StringBuffer console = new StringBuffer();
+        berlinClock.display(console);
+
+        try {
+            new BerlinClockWindowDisplay().displayWithColour(berlinClock.getParameterTime(), console);
+            sleep(intervalDelayMilliseconds);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+            throw new RuntimeException("Error - display failed.");
+        }
     }
 }
+
