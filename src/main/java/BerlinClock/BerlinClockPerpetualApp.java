@@ -2,9 +2,6 @@ package BerlinClock;
 
 import static java.lang.Thread.sleep;
 
-/**
- * Created by xm39 on 15/12/2016.
- */
 public class BerlinClockPerpetualApp {
 
     public static void main(String[] args) {
@@ -74,7 +71,7 @@ public class BerlinClockPerpetualApp {
             try {
                 StringBuffer console = new StringBuffer();
                 b.display(console);
-                new BerlinClockSpecialDisplay().displayInWindowWithColouring(b.getParameterTime(),console);
+                new BerlinClockWindowDisplay().displayWithColour(b.getParameterTime(),console);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }

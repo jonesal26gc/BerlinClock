@@ -1,5 +1,5 @@
 import BerlinClock.BerlinClock;
-import BerlinClock.BerlinClockSpecialDisplay;
+import BerlinClock.BerlinClockWindowDisplay;
 import org.junit.*;
 
 import static org.junit.Assert.*;
@@ -231,7 +231,7 @@ public class BerlinClockTest {
         StringBuffer console = new StringBuffer();
         b.display(console);
         try {
-            new BerlinClockSpecialDisplay().displayInWindow(b.getParameterTime(),console);
+            new BerlinClockWindowDisplay().displayWithLetters(b.getParameterTime(),console);
         } catch ( InterruptedException ex ) {
             ex.printStackTrace();
         }
@@ -243,7 +243,7 @@ public class BerlinClockTest {
         StringBuffer console = new StringBuffer();
         b.display(console);
         try {
-            new BerlinClockSpecialDisplay().displayInWindowWithColouring(b.getParameterTime(),console);
+            new BerlinClockWindowDisplay().displayWithColour(b.getParameterTime(),console);
         } catch ( InterruptedException ex ) {
             ex.printStackTrace();
         }

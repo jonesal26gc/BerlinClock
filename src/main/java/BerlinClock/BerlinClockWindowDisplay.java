@@ -9,7 +9,7 @@ import java.awt.*;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
-public class BerlinClockSpecialDisplay {
+public class BerlinClockWindowDisplay {
 
     private static final String[] fontOptions = {"Serif", "Agency FB", "Arial", "Calibri", "Cambrian"
             , "Century Gothic", "Comic Sans MS", "Courier New"
@@ -18,8 +18,7 @@ public class BerlinClockSpecialDisplay {
     private static final int[] sizeOptions = {8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28};
     private static final int windowDisplayInMilliSeconds = 10000;
 
-
-    public static void displayInWindow(String parameterTime, StringBuffer console) throws InterruptedException {
+    public void displayWithLetters(String parameterTime, StringBuffer console) throws InterruptedException {
         // Declare a label field.
         JLabel labelField = new JLabel(parameterTime);
         labelField.setHorizontalAlignment(SwingConstants.CENTER);
@@ -45,7 +44,7 @@ public class BerlinClockSpecialDisplay {
         frame.dispose();
     }
 
-    public static void displayInWindowWithColouring(String parameterTime, StringBuffer console) throws InterruptedException {
+    public void displayWithColour(String parameterTime, StringBuffer console) throws InterruptedException {
         // Declare a label field.
         JLabel labelField = new JLabel(parameterTime);
         labelField.setHorizontalAlignment(SwingConstants.CENTER);
@@ -93,7 +92,7 @@ public class BerlinClockSpecialDisplay {
         frame.dispose();
     }
 
-    private static void appendToPane(JTextPane tp, String msg, Color c) {
+    private void appendToPane(JTextPane tp, String msg, Color c) {
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset;
         aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
