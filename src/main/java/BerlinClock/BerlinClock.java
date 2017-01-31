@@ -13,8 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 
-import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
-
 public class BerlinClock {
 
     /*********************************************************************************
@@ -28,11 +26,6 @@ public class BerlinClock {
     private static final String NEW_LINE = "\n";
     private static final int[] FIVE_MINUTE_EXCEPTION_INTERVALS = new int[]{3, 6, 9};
     private static final boolean NON_HOUR_INDICATOR = false;
-    private static final String[] fontOptions = {"Serif", "Agency FB", "Arial", "Calibri", "Cambrian"
-            , "Century Gothic", "Comic Sans MS", "Courier New"
-            , "Forte", "Garamond", "Monospaced", "Segoe UI"
-            , "Times New Roman", "Trebuchet MS", "Serif"};
-    private static final int[] sizeOptions = {8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28};
     private String parameterTime;
     private int hours;
     private int minutes;
@@ -42,7 +35,6 @@ public class BerlinClock {
     private boolean[] lampOn1hourIndicators = new boolean[4];
     private boolean[] lampOn5MinuteIndicators = new boolean[11];
     private boolean[] lampOn1MinuteIndicators = new boolean[4];
-    private int windowDisplayInMilliSeconds = 15000;
 
     public BerlinClock() {
         defaultTimeToNow();
@@ -134,16 +126,9 @@ public class BerlinClock {
         return lampOn1MinuteIndicators;
     }
 
-    public void setWindowDisplayInMilliSeconds(int windowDisplayInMilliSeconds) {
-        if (windowDisplayInMilliSeconds <= 10000) {
-            this.windowDisplayInMilliSeconds = windowDisplayInMilliSeconds;
-        }
-    }
-
-    @MethodInfo(author = "TonyJ", comments = "displayInConsole", date = "2016-12-13", revision = 2)
-    public StringBuffer displayInConsole() {
-        return new StringBuffer()
-                .append(buildBoxForSecondDisplay(lampOnSecondIndicator))
+    @MethodInfo(author = "TonyJ", comments = "display", date = "2016-12-13", revision = 2)
+    public void display(StringBuffer console) {
+        console.append(buildBoxForSecondDisplay(lampOnSecondIndicator))
                 .append(buildBoxesForFourBoxDisplay(HOUR_INDICATOR, lampOn5HourIndicators))
                 .append(buildBoxesForFourBoxDisplay(HOUR_INDICATOR, lampOn1hourIndicators))
                 .append(buildBoxesForFiveMinuteDisplay(lampOn5MinuteIndicators))
@@ -252,33 +237,6 @@ public class BerlinClock {
         return false;
     }
 
-    @MethodInfo(author = "TonyJ", comments = "displayInWindow", date = "2016-12-13", revision = 2)
-    public void displayInWindow() throws InterruptedException {
-        // Declare a label field.
-        JLabel labelField = new JLabel(getParameterTime());
-        labelField.setHorizontalAlignment(SwingConstants.CENTER);
-
-        // Declare a text area field.
-        JTextArea textField = new JTextArea(17, 36);
-        textField.append(displayInConsole().toString());
-        textField.setEditable(false);
-        textField.setFont(new Font(fontOptions[7], Font.BOLD, sizeOptions[4]));
-
-        // Declare and open the frame.
-        JFrame frame = new JFrame("Berlin Clock");
-        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        frame.getContentPane().add(labelField, BorderLayout.NORTH);
-        frame.getContentPane().add(textField, BorderLayout.CENTER);
-        frame.pack();
-        frame.setVisible(true);
-
-        // Sleep for a while with the displayInConsole on the screen.
-        Thread.sleep(windowDisplayInMilliSeconds);
-
-        // close the screen.
-        frame.dispose();
-    }
-
     public String getParameterTime() {
         return parameterTime;
     }
@@ -297,68 +255,6 @@ public class BerlinClock {
         } else {
             throw new Exception("Invalid time provided an input parameter.");
         }
-    }
-
-    public void displayInWindowWithColouring() throws InterruptedException {
-        // Declare a label field.
-        JLabel labelField = new JLabel(getParameterTime());
-        labelField.setHorizontalAlignment(SwingConstants.CENTER);
-
-        // Declare a text area field.
-        JTextPane textField = new JTextPane();
-
-        // Loop through each characters and set the colour and revised shape to
-        // provide a larger block.
-        String printString = displayInConsole().toString().replace("  R  ", "RRRRR").replace("  Y  ", "YYYYY");
-        if (printString.contains("  YYYYY  ")) {
-            printString = printString.replace("  YYYYY  ", " YYYYYYY ");
-            printString = printString.replace("*     *", "* YYY *");
-        }
-
-        for (int i = 0; i < (printString.length()); i++) {
-            char x = (printString.charAt(i));
-            switch (x) {
-                case 'R':
-                    appendToPane(textField, String.valueOf((char) 9608), Color.RED);
-                    break;
-                case 'Y':
-                    appendToPane(textField, String.valueOf((char) 9608), Color.yellow);
-                    break;
-                default:
-                    appendToPane(textField, String.valueOf(x), Color.lightGray);
-            }
-        }
-
-        textField.setEditable(false);
-        //textField.setFont(new Font(fontOptions[7], Font.BOLD, sizeOptions[2]));
-
-        // Declare and open the frame.
-        JFrame frame = new JFrame("Berlin Clock");
-        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        frame.getContentPane().add(labelField, BorderLayout.NORTH);
-        frame.getContentPane().add(textField, BorderLayout.CENTER);
-        frame.pack();
-        frame.setVisible(true);
-
-        // Sleep for a while with the displayInConsole on the screen.
-        Thread.sleep(windowDisplayInMilliSeconds);
-
-        // close the screen.
-        frame.dispose();
-    }
-
-    private void appendToPane(JTextPane tp, String msg, Color c) {
-        StyleContext sc = StyleContext.getDefaultStyleContext();
-        AttributeSet aset;
-        aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
-        aset = sc.addAttribute(aset, StyleConstants.FontFamily, fontOptions[7]);
-        aset = sc.addAttribute(aset, StyleConstants.FontSize, sizeOptions[2]);
-        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
-
-        int len = tp.getDocument().getLength();
-        tp.setCaretPosition(len);
-        tp.setCharacterAttributes(aset, false);
-        tp.replaceSelection(msg);
     }
 
     @Override // States that this method overrides that of a super-class (i.e. Object.toString().

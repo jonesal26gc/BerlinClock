@@ -1,4 +1,5 @@
 import BerlinClock.BerlinClock;
+import BerlinClock.BerlinClockSpecialDisplay;
 import org.junit.*;
 
 import static org.junit.Assert.*;
@@ -219,15 +220,18 @@ public class BerlinClockTest {
     public void should_display_on_console() {
         BerlinClock b = new BerlinClock("20:00:00");
         b.setLampOnIndicators();
-        b.displayInConsole();
+        StringBuffer console = new StringBuffer();
+        b.display(console);
+        System.out.println(console.toString());
     }
 
     @Test
     public void should_display_in_window() {
         BerlinClock b = new BerlinClock("20:00:00");
+        StringBuffer console = new StringBuffer();
+        b.display(console);
         try {
-            b.setWindowDisplayInMilliSeconds(500);
-            b.displayInWindow();
+            new BerlinClockSpecialDisplay().displayInWindow(b.getParameterTime(),console);
         } catch ( InterruptedException ex ) {
             ex.printStackTrace();
         }
@@ -235,10 +239,11 @@ public class BerlinClockTest {
 
     @Test
     public void should_display_in_pane() {
-        BerlinClock b = new BerlinClock("24:00:00");
+        BerlinClock b = new BerlinClock("20:00:00");
+        StringBuffer console = new StringBuffer();
+        b.display(console);
         try {
-            b.setWindowDisplayInMilliSeconds(5000);
-            b.displayInWindowWithColouring();
+            new BerlinClockSpecialDisplay().displayInWindowWithColouring(b.getParameterTime(),console);
         } catch ( InterruptedException ex ) {
             ex.printStackTrace();
         }

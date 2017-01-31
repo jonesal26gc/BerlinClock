@@ -18,7 +18,7 @@ public class BerlinClockPerpetualApp {
         int intervalDelayMinutes = 10;
         int maximumIterations = 100;
 
-        int intervalDelayMilliseconds = 1000;
+        int intervalDelayMilliseconds = 60000;
 
         // Use the parameters to adjust the run characteristics.
         if (args.length >= 4) {
@@ -68,12 +68,13 @@ public class BerlinClockPerpetualApp {
 
             // Set the time and the indicators.
             b = new BerlinClock();
-            //b.setWindowDisplayInMilliSeconds(15000);
 
             // Display the window.
             System.out.println("Display @ " + b.getParameterTime());
             try {
-                b.displayInWindowWithColouring();
+                StringBuffer console = new StringBuffer();
+                b.display(console);
+                new BerlinClockSpecialDisplay().displayInWindowWithColouring(b.getParameterTime(),console);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
@@ -85,7 +86,6 @@ public class BerlinClockPerpetualApp {
                 ex.printStackTrace();
             }
         }
-
         System.out.println("Ending");
     }
 }
