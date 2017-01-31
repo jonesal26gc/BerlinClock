@@ -17,11 +17,11 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class BerlinClock {
 
-    public static final boolean HOUR_INDICATOR = true;
     /*********************************************************************************
      * Display the time in the Berlin Clock format.
      *********************************************************************************/
     private static final int REVISION = 1;
+    public static final boolean HOUR_INDICATOR = true;
     private static final char RED_CHAR = 'R';
     private static final char YELLOW_CHAR = 'Y';
     private static final char OFF_CHAR = ' ';
@@ -49,6 +49,58 @@ public class BerlinClock {
         setLampOnIndicators();
     }
 
+    @MethodInfo(author = "TonyJ", comments = "defaultTimeToNow", date = "2016-12-13", revision = 2)
+    public void defaultTimeToNow() {
+        try {
+            DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            Calendar cal1 = Calendar.getInstance();
+            setParameterTime(sdf.format(cal1.getTime()));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @MethodInfo(author = "TonyJ", comments = "setLampOnIndicators", date = "2016-12-13", revision = 2)
+    public void setLampOnIndicators() {
+        setLampOnSecondIndicator();
+        setLampOn5HourIndicators();
+        setLampOn1HourIndicators();
+        setLampOn5MinuteIndicators();
+        setLampOn1MinuteIndicators();
+    }
+
+    private void setLampOnSecondIndicator() {
+        lampOnSecondIndicator = !(((seconds / 2) * 2) == seconds);
+    }
+
+    private void setLampOn5HourIndicators() {
+        int numberOf5HrIntervals = hours / 5;
+        for (int indicator = 0; indicator < lampOn5HourIndicators.length; indicator++) {
+            lampOn5HourIndicators[indicator] = (indicator < numberOf5HrIntervals);
+        }
+    }
+
+    private void setLampOn1HourIndicators() {
+        int numberOf1HrIntervals = hours % 5;
+        for (int indicator = 0; indicator < lampOn1hourIndicators.length; indicator++) {
+            lampOn1hourIndicators[indicator] = (indicator < numberOf1HrIntervals);
+        }
+    }
+
+    private void setLampOn5MinuteIndicators() {
+        int numberOf5MinIntervals = minutes / 5;
+        for (int indicator = 0; indicator < lampOn5MinuteIndicators.length; indicator++) {
+            lampOn5MinuteIndicators[indicator] = (indicator < numberOf5MinIntervals);
+        }
+    }
+
+    private void setLampOn1MinuteIndicators() {
+        int numberOf1MinIntervals = minutes % 5;
+        for (int indicator = 0; indicator < lampOn1MinuteIndicators.length; indicator++) {
+            lampOn1MinuteIndicators[indicator] = (indicator < numberOf1MinIntervals);
+        }
+    }
+
     public BerlinClock(String parameterTime) {
         try {
             setParameterTime(parameterTime);
@@ -58,36 +110,8 @@ public class BerlinClock {
         }
     }
 
-    public String getParameterTime() {
-        return parameterTime;
-    }
-
-    @MethodInfo(author = "TonyJ", comments = "setParameterTime", date = "2016-12-13", revision = 2)
-    public void setParameterTime(String parameterTime) throws Exception {
-        Time24hFormatValidator time24hFormatValidator = new Time24hFormatValidator();
-        if (time24hFormatValidator.validate(parameterTime)) {
-            // set the current times.
-            this.parameterTime = parameterTime;
-
-            // Derive the other attributes from this time.
-            this.hours = Integer.parseInt(parameterTime.substring(0, 2));
-            this.minutes = Integer.parseInt(parameterTime.substring(3, 5));
-            this.seconds = Integer.parseInt(parameterTime.substring(6, 8));
-        } else {
-            throw new Exception("Invalid time provided an input parameter.");
-        }
-    }
-
     public int getHours() {
         return hours;
-    }
-
-    public int getMinutes() {
-        return minutes;
-    }
-
-    public int getSeconds() {
-        return seconds;
     }
 
     public boolean getLampOnSecondIndicator() {
@@ -116,58 +140,6 @@ public class BerlinClock {
         }
     }
 
-    @MethodInfo(author = "TonyJ", comments = "defaultTimeToNow", date = "2016-12-13", revision = 2)
-    public void defaultTimeToNow() {
-        try {
-            DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-            Calendar cal1 = Calendar.getInstance();
-            setParameterTime(sdf.format(cal1.getTime()));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @MethodInfo(author = "TonyJ", comments = "setLampOnIndicators", date = "2016-12-13", revision = 2)
-    public void setLampOnIndicators() {
-        setLampOnSecondIndicator();
-        setLampOn5HourIndicators();
-        setLampOn1HourIndicators();
-        setLampOn5MinuteIndicators();
-        setLampOn1MinuteIndicators();
-    }
-
-    private void setLampOn1MinuteIndicators() {
-        int numberOf1MinIntervals = minutes % 5;
-        for (int indicator = 0; indicator < lampOn1MinuteIndicators.length; indicator++) {
-            lampOn1MinuteIndicators[indicator] = (indicator < numberOf1MinIntervals);
-        }
-    }
-
-    private void setLampOn5MinuteIndicators() {
-        int numberOf5MinIntervals = minutes / 5;
-        for (int indicator = 0; indicator < lampOn5MinuteIndicators.length; indicator++) {
-            lampOn5MinuteIndicators[indicator] = (indicator < numberOf5MinIntervals);
-        }
-    }
-
-    private void setLampOn1HourIndicators() {
-        int numberOf1HrIntervals = hours % 5;
-        for (int indicator = 0; indicator < lampOn1hourIndicators.length; indicator++) {
-            lampOn1hourIndicators[indicator] = (indicator < numberOf1HrIntervals);
-        }
-    }
-
-    private void setLampOn5HourIndicators() {
-        int numberOf5HrIntervals = hours / 5;
-        for (int indicator = 0; indicator < lampOn5HourIndicators.length; indicator++) {
-            lampOn5HourIndicators[indicator] = (indicator < numberOf5HrIntervals);
-        }
-    }
-
-    private void setLampOnSecondIndicator() {
-        lampOnSecondIndicator = !(((seconds / 2) * 2) == seconds);
-    }
-
     @MethodInfo(author = "TonyJ", comments = "displayInConsole", date = "2016-12-13", revision = 2)
     // @deprecated
     // The following method of displayInConsole should no longer be used.
@@ -179,6 +151,108 @@ public class BerlinClock {
         System.out.print(buildBoxesForFourBoxDisplay(HOUR_INDICATOR, lampOn1hourIndicators));
         System.out.print(buildBoxesForFiveMinuteDisplay(lampOn5MinuteIndicators));
         System.out.print(buildBoxesForFourBoxDisplay(NON_HOUR_INDICATOR, lampOn1MinuteIndicators));
+    }
+
+    @MethodInfo(author = "TonyJ", comments = "buildBoxForSecondDisplay", date = "2016-12-13", revision = 2)
+    public StringBuffer buildBoxForSecondDisplay(boolean lampOnIndicator) {
+        return new StringBuffer()
+                .append(NEW_LINE)
+                .append("                 * *")
+                .append(NEW_LINE)
+                .append("               *     *")
+                .append(NEW_LINE)
+                .append("             *    ")
+                .append(getLampCharacterOfSecondDisplay(lampOnIndicator))
+                .append("    *")
+                .append(NEW_LINE)
+                .append("               *     *")
+                .append(NEW_LINE)
+                .append("                 * *");
+    }
+
+    @MethodInfo(author = "TonyJ", comments = "buildBoxesForFourBoxDisplay", date = "2016-12-13", revision = 2)
+    public StringBuffer buildBoxesForFourBoxDisplay(boolean hourIndicator, boolean[] lampOnIndicators) {
+        StringBuffer stringBuffer = new StringBuffer();
+
+        stringBuffer
+                .append(NEW_LINE)
+                .append("╔═══════╗╔═══════╗╔═══════╗╔═══════╗")
+                .append(NEW_LINE);
+
+        for (boolean lampOnIndicator : lampOnIndicators) {
+            stringBuffer
+                    .append("║   ")
+                    .append(getLampCharacterForFourBoxDisplay(hourIndicator, lampOnIndicator))
+                    .append("   ║");
+        }
+
+        stringBuffer.append(NEW_LINE)
+                .append("╚═══════╝╚═══════╝╚═══════╝╚═══════╝");
+
+        return stringBuffer;
+    }
+
+    @MethodInfo(author = "TonyJ", comments = "buildBoxesForFiveMinuteDisplay", date = "2016-12-13", revision = 2)
+    public StringBuffer buildBoxesForFiveMinuteDisplay(boolean[] lampOnIndicators) {
+        StringBuffer stringBuffer = new StringBuffer();
+
+        stringBuffer.append(NEW_LINE)
+                .append("╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗")
+                .append(NEW_LINE);
+
+        int lampNumber = 0;
+        for (boolean lampOnIndicator : lampOnIndicators) {
+            lampNumber++;
+            stringBuffer.append("║")
+                    .append(getLampCharacterForFiveMinuteDisplay(lampOnIndicator, lampNumber))
+                    .append("║");
+            if (isFiveMinuteExceptionInterval(lampNumber)) {
+                stringBuffer.append(" ");
+            }
+        }
+
+        stringBuffer.append(NEW_LINE)
+                .append("╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝");
+
+        return stringBuffer;
+    }
+
+    private char getLampCharacterOfSecondDisplay(boolean lampOnIndicator) {
+        if (lampOnIndicator) {
+            return YELLOW_CHAR;
+        }
+        return OFF_CHAR;
+    }
+
+    private char getLampCharacterForFourBoxDisplay(boolean hourIndicator, boolean lampOnIndicator) {
+        if (lampOnIndicator) {
+            if (hourIndicator) {
+                return RED_CHAR;
+            } else {
+                return YELLOW_CHAR;
+            }
+        }
+        return OFF_CHAR;
+    }
+
+    private char getLampCharacterForFiveMinuteDisplay(boolean lampOnIndicator, int lampNumber) {
+        if (lampOnIndicator) {
+            if (isFiveMinuteExceptionInterval(lampNumber)) {
+                return RED_CHAR;
+            } else {
+                return YELLOW_CHAR;
+            }
+        }
+        return OFF_CHAR;
+    }
+
+    private boolean isFiveMinuteExceptionInterval(int lampNumber) {
+        for (int fiveMinuteExceptionInterval : FIVE_MINUTE_EXCEPTION_INTERVALS) {
+            if (lampNumber == fiveMinuteExceptionInterval) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @MethodInfo(author = "TonyJ", comments = "displayInWindow", date = "2016-12-13", revision = 2)
@@ -210,6 +284,26 @@ public class BerlinClock {
 
         // close the screen.
         frame.dispose();
+    }
+
+    public String getParameterTime() {
+        return parameterTime;
+    }
+
+    @MethodInfo(author = "TonyJ", comments = "setParameterTime", date = "2016-12-13", revision = 2)
+    public void setParameterTime(String parameterTime) throws Exception {
+        Time24hFormatValidator time24hFormatValidator = new Time24hFormatValidator();
+        if (time24hFormatValidator.validate(parameterTime)) {
+            // set the current times.
+            this.parameterTime = parameterTime;
+
+            // Derive the other attributes from this time.
+            this.hours = Integer.parseInt(parameterTime.substring(0, 2));
+            this.minutes = Integer.parseInt(parameterTime.substring(3, 5));
+            this.seconds = Integer.parseInt(parameterTime.substring(6, 8));
+        } else {
+            throw new Exception("Invalid time provided an input parameter.");
+        }
     }
 
     public void displayInWindowWithColouring() throws InterruptedException {
@@ -279,108 +373,6 @@ public class BerlinClock {
         tp.setCaretPosition(len);
         tp.setCharacterAttributes(aset, false);
         tp.replaceSelection(msg);
-    }
-
-    @MethodInfo(author = "TonyJ", comments = "buildBoxForSecondDisplay", date = "2016-12-13", revision = 2)
-    public StringBuffer buildBoxForSecondDisplay(boolean lampOnIndicator) {
-        return new StringBuffer()
-                .append(NEW_LINE)
-                .append("                 * *")
-                .append(NEW_LINE)
-                .append("               *     *")
-                .append(NEW_LINE)
-                .append("             *    ")
-                .append(getLampCharacterOfSecondDisplay(lampOnIndicator))
-                .append("    *")
-                .append(NEW_LINE)
-                .append("               *     *")
-                .append(NEW_LINE)
-                .append("                 * *");
-    }
-
-    private char getLampCharacterOfSecondDisplay(boolean lampOnIndicator) {
-        if (lampOnIndicator) {
-            return YELLOW_CHAR;
-        }
-        return OFF_CHAR;
-    }
-
-    @MethodInfo(author = "TonyJ", comments = "buildBoxesForFourBoxDisplay", date = "2016-12-13", revision = 2)
-    public StringBuffer buildBoxesForFourBoxDisplay(boolean hourIndicator, boolean[] lampOnIndicators) {
-        StringBuffer stringBuffer = new StringBuffer();
-
-        stringBuffer
-                .append(NEW_LINE)
-                .append("╔═══════╗╔═══════╗╔═══════╗╔═══════╗")
-                .append(NEW_LINE);
-
-        for (boolean lampOnIndicator : lampOnIndicators) {
-            stringBuffer
-                    .append("║   ")
-                    .append(getLampCharacterForFourBoxDisplay(hourIndicator, lampOnIndicator))
-                    .append("   ║");
-        }
-
-        stringBuffer.append(NEW_LINE)
-                .append("╚═══════╝╚═══════╝╚═══════╝╚═══════╝");
-
-        return stringBuffer;
-    }
-
-    private char getLampCharacterForFourBoxDisplay(boolean hourIndicator, boolean lampOnIndicator) {
-        if (lampOnIndicator) {
-            if (hourIndicator) {
-                return RED_CHAR;
-            } else {
-                return YELLOW_CHAR;
-            }
-        }
-        return OFF_CHAR;
-    }
-
-    @MethodInfo(author = "TonyJ", comments = "buildBoxesForFiveMinuteDisplay", date = "2016-12-13", revision = 2)
-    public StringBuffer buildBoxesForFiveMinuteDisplay(boolean[] lampOnIndicators) {
-        StringBuffer stringBuffer = new StringBuffer();
-
-        stringBuffer.append(NEW_LINE)
-                .append("╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗")
-                .append(NEW_LINE);
-
-        int lampNumber = 0;
-        for (boolean lampOnIndicator : lampOnIndicators) {
-            lampNumber++;
-            stringBuffer.append("║")
-                    .append(getLampCharacterForFiveMinuteDisplay(lampOnIndicator, lampNumber))
-                    .append("║");
-            if (isFiveMinuteExceptionInterval(lampNumber)) {
-                stringBuffer.append(" ");
-            }
-        }
-
-        stringBuffer.append(NEW_LINE)
-                .append("╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝╚═╝ ╚═╝╚═╝");
-
-        return stringBuffer;
-    }
-
-    private char getLampCharacterForFiveMinuteDisplay(boolean lampOnIndicator, int lampNumber) {
-        if (lampOnIndicator) {
-            if (isFiveMinuteExceptionInterval(lampNumber)) {
-                return RED_CHAR;
-            } else {
-                return YELLOW_CHAR;
-            }
-        }
-        return OFF_CHAR;
-    }
-
-    private boolean isFiveMinuteExceptionInterval(int lampNumber) {
-        for (int fiveMinuteExceptionInterval : FIVE_MINUTE_EXCEPTION_INTERVALS) {
-            if (lampNumber == fiveMinuteExceptionInterval) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override // States that this method overrides that of a super-class (i.e. Object.toString().
