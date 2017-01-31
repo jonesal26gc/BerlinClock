@@ -141,16 +141,13 @@ public class BerlinClock {
     }
 
     @MethodInfo(author = "TonyJ", comments = "displayInConsole", date = "2016-12-13", revision = 2)
-    // @deprecated
-    // The following method of displayInConsole should no longer be used.
-    // Rather, use the pop-up window instead.
-    @Deprecated     // states that this method is "old hat" !
-    public void displayInConsole() {
-        System.out.print(buildBoxForSecondDisplay(lampOnSecondIndicator));
-        System.out.print(buildBoxesForFourBoxDisplay(HOUR_INDICATOR, lampOn5HourIndicators));
-        System.out.print(buildBoxesForFourBoxDisplay(HOUR_INDICATOR, lampOn1hourIndicators));
-        System.out.print(buildBoxesForFiveMinuteDisplay(lampOn5MinuteIndicators));
-        System.out.print(buildBoxesForFourBoxDisplay(NON_HOUR_INDICATOR, lampOn1MinuteIndicators));
+    public StringBuffer displayInConsole() {
+        return new StringBuffer()
+                .append(buildBoxForSecondDisplay(lampOnSecondIndicator))
+                .append(buildBoxesForFourBoxDisplay(HOUR_INDICATOR, lampOn5HourIndicators))
+                .append(buildBoxesForFourBoxDisplay(HOUR_INDICATOR, lampOn1hourIndicators))
+                .append(buildBoxesForFiveMinuteDisplay(lampOn5MinuteIndicators))
+                .append(buildBoxesForFourBoxDisplay(NON_HOUR_INDICATOR, lampOn1MinuteIndicators));
     }
 
     @MethodInfo(author = "TonyJ", comments = "buildBoxForSecondDisplay", date = "2016-12-13", revision = 2)
@@ -263,11 +260,7 @@ public class BerlinClock {
 
         // Declare a text area field.
         JTextArea textField = new JTextArea(17, 36);
-        textField.append(buildBoxForSecondDisplay(lampOnSecondIndicator).toString());
-        textField.append(buildBoxesForFourBoxDisplay(HOUR_INDICATOR, lampOn5HourIndicators).toString());
-        textField.append(buildBoxesForFourBoxDisplay(HOUR_INDICATOR, lampOn1hourIndicators).toString());
-        textField.append(buildBoxesForFiveMinuteDisplay(lampOn5MinuteIndicators).toString());
-        textField.append(buildBoxesForFourBoxDisplay(NON_HOUR_INDICATOR, lampOn1MinuteIndicators).toString());
+        textField.append(displayInConsole().toString());
         textField.setEditable(false);
         textField.setFont(new Font(fontOptions[7], Font.BOLD, sizeOptions[4]));
 
@@ -314,16 +307,9 @@ public class BerlinClock {
         // Declare a text area field.
         JTextPane textField = new JTextPane();
 
-        // Concatenate the clock output.
-        String printString = buildBoxForSecondDisplay(lampOnSecondIndicator).toString() +
-                buildBoxesForFourBoxDisplay(HOUR_INDICATOR, lampOn5HourIndicators).toString() +
-                buildBoxesForFourBoxDisplay(HOUR_INDICATOR, lampOn1hourIndicators).toString() +
-                buildBoxesForFiveMinuteDisplay(lampOn5MinuteIndicators).toString() +
-                buildBoxesForFourBoxDisplay(NON_HOUR_INDICATOR, lampOn1MinuteIndicators).toString();
-
         // Loop through each characters and set the colour and revised shape to
         // provide a larger block.
-        printString = printString.replace("  R  ", "RRRRR").replace("  Y  ", "YYYYY");
+        String printString = displayInConsole().toString().replace("  R  ", "RRRRR").replace("  Y  ", "YYYYY");
         if (printString.contains("  YYYYY  ")) {
             printString = printString.replace("  YYYYY  ", " YYYYYYY ");
             printString = printString.replace("*     *", "* YYY *");

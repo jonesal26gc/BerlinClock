@@ -17,10 +17,10 @@ public class BerlinClockApp {
         System.out.println(berlinClock.toString());
 
         // Format the indicators and displayInConsole the clock for the specified time.
-        berlinClock.displayInConsole();
+        System.out.println(berlinClock.displayInConsole());
         try {
             berlinClock.setWindowDisplayInMilliSeconds(DISPLAY_IN_MILLI_SECONDS);
-            //b.displayInWindow();
+            //berlinClock.displayInWindow();
             berlinClock.displayInWindowWithColouring();
         } catch (InterruptedException ex) {
             ex.printStackTrace();
