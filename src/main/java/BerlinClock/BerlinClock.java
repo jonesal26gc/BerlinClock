@@ -2,12 +2,6 @@ package BerlinClock;
 
 import Annotations.MethodInfo;
 
-import javax.swing.*;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
-import java.awt.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -19,12 +13,12 @@ public class BerlinClock {
      * Display the time in the Berlin Clock format.
      *********************************************************************************/
     private static final int REVISION = 1;
-    public static final boolean HOUR_INDICATOR = true;
+    private static final boolean HOUR_INDICATOR = true;
     private static final char RED_CHAR = 'R';
     private static final char YELLOW_CHAR = 'Y';
     private static final char OFF_CHAR = ' ';
     private static final String NEW_LINE = "\n";
-    private static final int[] FIVE_MINUTE_EXCEPTION_INTERVALS = new int[]{3, 6, 9};
+    private static final int[] FIVE_MINUTE_MODIFIED_DISPLAY_INTERVALS = new int[]{3, 6, 9};
     private static final boolean NON_HOUR_INDICATOR = false;
     private String parameterTime;
     private int hours;
@@ -129,10 +123,10 @@ public class BerlinClock {
     @MethodInfo(author = "TonyJ", comments = "display", date = "2016-12-13", revision = 2)
     public void display(StringBuffer console) {
         console.append(buildBoxForSecondDisplay(lampOnSecondIndicator))
-                .append(buildBoxesForFourBoxDisplay(HOUR_INDICATOR, lampOn5HourIndicators))
-                .append(buildBoxesForFourBoxDisplay(HOUR_INDICATOR, lampOn1hourIndicators))
+                .append(buildBoxesForFourBoxDisplay(lampOn5HourIndicators, HOUR_INDICATOR))
+                .append(buildBoxesForFourBoxDisplay(lampOn1hourIndicators, HOUR_INDICATOR))
                 .append(buildBoxesForFiveMinuteDisplay(lampOn5MinuteIndicators))
-                .append(buildBoxesForFourBoxDisplay(NON_HOUR_INDICATOR, lampOn1MinuteIndicators));
+                .append(buildBoxesForFourBoxDisplay(lampOn1MinuteIndicators, NON_HOUR_INDICATOR));
     }
 
     @MethodInfo(author = "TonyJ", comments = "buildBoxForSecondDisplay", date = "2016-12-13", revision = 2)
@@ -153,7 +147,7 @@ public class BerlinClock {
     }
 
     @MethodInfo(author = "TonyJ", comments = "buildBoxesForFourBoxDisplay", date = "2016-12-13", revision = 2)
-    public StringBuffer buildBoxesForFourBoxDisplay(boolean hourIndicator, boolean[] lampOnIndicators) {
+    public StringBuffer buildBoxesForFourBoxDisplay(boolean[] lampOnIndicators, boolean hourIndicator) {
         StringBuffer stringBuffer = new StringBuffer();
 
         stringBuffer
@@ -164,7 +158,7 @@ public class BerlinClock {
         for (boolean lampOnIndicator : lampOnIndicators) {
             stringBuffer
                     .append("║   ")
-                    .append(getLampCharacterForFourBoxDisplay(hourIndicator, lampOnIndicator))
+                    .append(getLampCharacterForFourBoxDisplay(lampOnIndicator, hourIndicator))
                     .append("   ║");
         }
 
@@ -206,7 +200,7 @@ public class BerlinClock {
         return OFF_CHAR;
     }
 
-    private char getLampCharacterForFourBoxDisplay(boolean hourIndicator, boolean lampOnIndicator) {
+    private char getLampCharacterForFourBoxDisplay(boolean lampOnIndicator, boolean hourIndicator) {
         if (lampOnIndicator) {
             if (hourIndicator) {
                 return RED_CHAR;
@@ -229,7 +223,7 @@ public class BerlinClock {
     }
 
     private boolean isFiveMinuteExceptionInterval(int lampNumber) {
-        for (int fiveMinuteExceptionInterval : FIVE_MINUTE_EXCEPTION_INTERVALS) {
+        for (int fiveMinuteExceptionInterval : FIVE_MINUTE_MODIFIED_DISPLAY_INTERVALS) {
             if (lampNumber == fiveMinuteExceptionInterval) {
                 return true;
             }
@@ -261,7 +255,7 @@ public class BerlinClock {
     @MethodInfo(author = "TonyJ", comments = "toString", date = "2016-12-13", revision = REVISION)
     public String toString() {
         return "BerlinClock.BerlinClock{" +
-                "parameterTime='" + parameterTime + '\'' +
+                "parameterTime='" + parameterTime + "', " +
                 ", hours=" + hours +
                 ", minutes=" + minutes +
                 ", seconds=" + seconds +

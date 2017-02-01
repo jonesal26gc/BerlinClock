@@ -6,6 +6,7 @@ public class BerlinClockPerpetualParameters {
     public static final int END_OF_DAY = 17;
     public static final int TEN_MINUTES = 10;
     public static final int ONE_HUNDRED = 100;
+
     private int earliestHour;
     private int latestHour;
     private int intervalBetweenDisplaysInMinutes;

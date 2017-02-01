@@ -21,7 +21,9 @@ public class BerlinClockPerpetualApp {
     }
 
     private static void run(BerlinClockPerpetualParameters berlinClockPerpetualParameters) {
-        int intervalBetweenDisplaysInMilliseconds = (berlinClockPerpetualParameters.getIntervalBetweenDisplaysInMinutes() * MILLISECONDS_PER_MINUTE);
+        int intervalBetweenDisplaysInMilliseconds =
+                (berlinClockPerpetualParameters.getIntervalBetweenDisplaysInMinutes()
+                        * MILLISECONDS_PER_MINUTE);
 
         for (int iteration = 1; true; iteration++) {
             BerlinClock berlinClock = new BerlinClock();
@@ -37,14 +39,13 @@ public class BerlinClockPerpetualApp {
         }
     }
 
-    private static void display(int intervalDelayMilliseconds, String parameterTime, StringBuffer console) {
+    private static void display(int intervalBetweenDisplaysInMilliseconds, String parameterTime, StringBuffer console) {
         try {
             new BerlinClockWindowDisplay().displayWithColour(parameterTime, console);
-            sleep(intervalDelayMilliseconds);
+            sleep(intervalBetweenDisplaysInMilliseconds);
         } catch (InterruptedException ex) {
             ex.printStackTrace();
             throw new RuntimeException("Error - display failed.");
         }
     }
 }
-
