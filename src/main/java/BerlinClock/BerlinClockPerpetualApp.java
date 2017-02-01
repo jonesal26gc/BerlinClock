@@ -26,8 +26,8 @@ public class BerlinClockPerpetualApp {
         for (int iteration = 1; true; iteration++) {
             BerlinClock berlinClock = new BerlinClock();
             if (iteration > berlinClockPerpetualParameters.getMaximumIterationsForThisExecution()
-                    | berlinClock.getHours() < berlinClockPerpetualParameters.getEarliestStartHour()
-                    | berlinClock.getHours() > berlinClockPerpetualParameters.getLatestEndHour()) {
+                    | berlinClock.getHours() < berlinClockPerpetualParameters.getEarliestHour()
+                    | berlinClock.getHours() > berlinClockPerpetualParameters.getLatestHour()) {
                 break;
             }
             System.out.println("Display @ " + berlinClock.getParameterTime());
