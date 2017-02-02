@@ -87,13 +87,9 @@ public class BerlinClock {
         }
     }
 
-    public BerlinClock(String parameterTime) {
-        try {
-            setParameterTime(parameterTime);
-            setLampOnIndicators();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    public BerlinClock(String parameterTime) throws Exception {
+        setParameterTime(parameterTime);
+        setLampOnIndicators();
     }
 
     public int getHours() {
