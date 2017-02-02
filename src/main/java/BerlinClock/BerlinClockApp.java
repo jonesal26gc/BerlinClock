@@ -2,7 +2,7 @@ package BerlinClock;
 
 public class BerlinClockApp {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         BerlinClock berlinClock = createBerlinClock(args);
         StringBuffer console = new StringBuffer();
@@ -17,7 +17,7 @@ public class BerlinClockApp {
         }
     }
 
-    private static BerlinClock createBerlinClock(String[] args) {
+    private static BerlinClock createBerlinClock(String[] args) throws Exception {
         if (args.length == 0) {
             return new BerlinClock();
         }
