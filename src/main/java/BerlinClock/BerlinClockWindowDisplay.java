@@ -18,7 +18,7 @@ public class BerlinClockWindowDisplay {
     private static final int[] sizeOptions = {8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28};
     private static final int windowDisplayInMilliSeconds = 10000;
 
-    public void displayWithLetters(String parameterTime, StringBuffer console) throws InterruptedException {
+    public static void displayWithLetters(String parameterTime, StringBuffer console) throws InterruptedException {
         // Declare a label field.
         JLabel labelField = new JLabel(parameterTime);
         labelField.setHorizontalAlignment(SwingConstants.CENTER);
@@ -44,7 +44,7 @@ public class BerlinClockWindowDisplay {
         frame.dispose();
     }
 
-    public void displayWithColour(String parameterTime, StringBuffer console) throws InterruptedException {
+    public static void displayWithColour(String parameterTime, StringBuffer console) throws InterruptedException {
         // Declare a label field.
         JLabel labelField = new JLabel(parameterTime);
         labelField.setHorizontalAlignment(SwingConstants.CENTER);
@@ -92,7 +92,7 @@ public class BerlinClockWindowDisplay {
         frame.dispose();
     }
 
-    private void appendToPane(JTextPane tp, String msg, Color c) {
+    private static void appendToPane(JTextPane tp, String msg, Color c) {
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset;
         aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);

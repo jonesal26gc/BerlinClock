@@ -10,8 +10,8 @@ public class BerlinClockApp {
         System.out.println(console.toString());
 
         try {
-            new BerlinClockWindowDisplay().displayWithLetters(berlinClock.getParameterTime(),console);
-            new BerlinClockWindowDisplay().displayWithColour(berlinClock.getParameterTime(),console);
+            BerlinClockWindowDisplay.displayWithLetters(berlinClock.getParameterTime(),console);
+            BerlinClockWindowDisplay.displayWithColour(berlinClock.getParameterTime(),console);
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
