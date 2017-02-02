@@ -13,32 +13,39 @@ public class BerlinClockPerpetualParametersShould {
 
     @Test
     public void
-    default_without_parameters(){
+    default_without_parameters() {
         BerlinClockPerpetualParameters berlinClockPerpetualParameters =
                 new BerlinClockPerpetualParameters();
     }
 
     @Test
     public void
-    run_with_4_parameters(){
-        String[] parms = {"01","23","4","5"};
-        BerlinClockPerpetualParameters berlinClockPerpetualParameters =
-                new BerlinClockPerpetualParameters(parms);
-        assertThat(berlinClockPerpetualParameters.getEarliestHour(),is(1));
-        assertThat(berlinClockPerpetualParameters.getLatestHour(),is(23));
-        assertThat(berlinClockPerpetualParameters.getIntervalBetweenDisplaysInMinutes(),is(4));
-        assertThat(berlinClockPerpetualParameters.getMaximumIterationsForThisExecution(),is(5));
+    run_with_4_parameters() {
+        String[] parms = {"01", "23", "4", "5"};
+
+        try {
+            BerlinClockPerpetualParameters berlinClockPerpetualParameters =
+                    new BerlinClockPerpetualParameters(parms);
+            assertThat(berlinClockPerpetualParameters.getEarliestHour(), is(1));
+            assertThat(berlinClockPerpetualParameters.getLatestHour(), is(23));
+            assertThat(berlinClockPerpetualParameters.getIntervalBetweenDisplaysInMinutes(), is(4));
+            assertThat(berlinClockPerpetualParameters.getMaximumIterationsForThisExecution(), is(5));
+        } catch (Exception ex) {
+            new RuntimeException("Error");
+        }
     }
 
-//    @Test(expected = Exception.class)
+    //@Test(expected = Exception.class)
 //    @Test
 //    public void
-//    error_with_earliestHour_of_0(){
+//    error_with_earliestHour_of_0() {
 //        thrown.expect(java.lang.Exception.class);
 //        thrown.expectMessage("Start hour '24' is invalid");
-//
-//        String[] parms = {"24","23","4","5"};
-//        BerlinClockPerpetualParameters berlinClockPerpetualParameters =
-//                new BerlinClockPerpetualParameters(parms);
+//        try {
+//            String[] parms = {"99", "23", "4", "5"};
+//            BerlinClockPerpetualParameters berlinClockPerpetualParameters =
+//                    new BerlinClockPerpetualParameters(parms);
+//        } catch (Exception ex) {
+//        }
 //    }
 }

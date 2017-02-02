@@ -15,7 +15,11 @@ public class BerlinClockPerpetualApp {
 
     private static BerlinClockPerpetualParameters createBerlinClockPerpetualParameters(String[] args) {
         if (args.length > 0) {
-            return new BerlinClockPerpetualParameters(args);
+            try {
+                return new BerlinClockPerpetualParameters(args);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
         return new BerlinClockPerpetualParameters();
     }

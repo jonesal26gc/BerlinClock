@@ -19,17 +19,13 @@ public class BerlinClockPerpetualParameters {
         maximumIterationsForThisExecution = ONE_HUNDRED;
     }
 
-    public BerlinClockPerpetualParameters(String[] args) {
-        try {
+    public BerlinClockPerpetualParameters(String[] args) throws Exception {
             validateNumberOfParameters(args);
             this.earliestHour = validateEarliestHour(args[0]);
             this.latestHour = validateLatestHour(args[1]);
             this.intervalBetweenDisplaysInMinutes = validateIntervalBetweenDisplaysInMinutes(args[2]);
             this.maximumIterationsForThisExecution = validateMaximumIterationsForThisExecution(args[3]);
             validateEarliestStartHourIsNotGreaterThanLatestEndHour(earliestHour, latestHour);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
     private void validateNumberOfParameters(String[] args) throws Exception {
