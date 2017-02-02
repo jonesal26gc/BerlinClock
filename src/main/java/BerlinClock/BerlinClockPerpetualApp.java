@@ -9,17 +9,8 @@ public class BerlinClockPerpetualApp {
      * Run the Berlin Clock application perpetually.
      *********************************************************************************/
 
-    public static void main(String[] args) {
-        run(createBerlinClockPerpetualParameters(args));
-    }
-
-    private static BerlinClockPerpetualParameters createBerlinClockPerpetualParameters(String[] args) {
-        try {
-            return new BerlinClockPerpetualParameters(args);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+    public static void main(String[] args) throws Exception {
+        run(new BerlinClockPerpetualParameters(args));
     }
 
     private static void run(BerlinClockPerpetualParameters berlinClockPerpetualParameters) {
