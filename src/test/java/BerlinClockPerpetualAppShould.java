@@ -1,15 +1,13 @@
 import BerlinClock.BerlinClockPerpetualApp;
 import org.junit.Test;
 
-public class BerlinClockPerpetualAppTest {
+public class BerlinClockPerpetualAppShould {
 
     @Test
-    public void shouldRunApp(){
-
-        final String [] paramsIn = {"15","15","1","1"};
+    public void
+    run_the_display_clock_perpetually() throws Exception{
+        final String [] paramsIn = {"09","18","1","2"};
         BerlinClockPerpetualApp b = new BerlinClockPerpetualApp();
         b.main(paramsIn);
-
     }
-
 }

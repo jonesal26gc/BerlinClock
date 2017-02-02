@@ -1,29 +1,33 @@
 import BerlinClock.BerlinClock;
+import BerlinClock.BerlinClockWindowDisplay;
 import org.junit.*;
 
 import static org.junit.Assert.*;
 
-public class BerlinClockTest {
+public class BerlinClockShould {
     /*********************************************************************************
      * All test cases for the Berlin Clock.
      *********************************************************************************/
     private static final String NEW_LINE = "\n";
 
     @Test
-    public void should_abend_and_return_null() {
+    public void
+    abend_and_return_null() {
         BerlinClock b = new BerlinClock("a");
         System.out.println(b.toString());
         assertNull(b.getParameterTime());
     }
 
     @Test
-    public void should_show_default() {
+    public void
+    show_default_time() {
         BerlinClock b = new BerlinClock("");
         System.out.println(b.toString());
     }
 
     @Test
-    public void should_show_000000() {
+    public void
+    show_000000() {
         BerlinClock b = new BerlinClock("00:00:00");
         System.out.println(b.toString());
         assertEquals("Incorrect time","00:00:00",b.getParameterTime());
@@ -45,7 +49,8 @@ public class BerlinClockTest {
     }
 
     @Test
-    public void should_show_060601() {
+    public void
+    show_060601() {
         BerlinClock b = new BerlinClock("06:06:01");
         System.out.println(b.toString());
         assertEquals("Incorrect","06:06:01",b.getParameterTime());
@@ -67,7 +72,8 @@ public class BerlinClockTest {
     }
 
     @Test
-    public void should_show_090400() {
+    public void
+    show_090400() {
         BerlinClock b = new BerlinClock("09:04:00");
         System.out.println(b.toString());
         assertEquals("Incorrect","09:04:00",b.getParameterTime());
@@ -89,7 +95,8 @@ public class BerlinClockTest {
     }
 
     @Test
-    public void should_show_123200() {
+    public void
+    show_123200() {
         BerlinClock b = new BerlinClock("12:32:00");
         System.out.println(b.toString());
         assertEquals("Incorrect","12:32:00",b.getParameterTime());
@@ -111,7 +118,8 @@ public class BerlinClockTest {
     }
 
     @Test
-    public void should_show_235959() {
+    public void
+    show_235959() {
         BerlinClock b = new BerlinClock("23:59:59");
         System.out.println(b.toString());
         assertEquals("Incorrect","23:59:59",b.getParameterTime());
@@ -133,7 +141,8 @@ public class BerlinClockTest {
     }
 
     @Test
-    public void should_show_240000() {
+    public void
+    show_240000() {
         BerlinClock b = new BerlinClock("24:00:00");
         System.out.println(b.toString());
         assertEquals("Incorrect time","24:00:00",b.getParameterTime());
@@ -154,12 +163,9 @@ public class BerlinClockTest {
                 ,b.getLampOn1MinuteIndicators());
     }
 
-
-
-
-
     @Test
-    public void should_display_second_on() {
+    public void
+    display_second_on() {
         assertEquals("Second should be displayed"
                 , ( NEW_LINE + "                 * *" + NEW_LINE +
                     "               *     *" + NEW_LINE +
@@ -170,29 +176,44 @@ public class BerlinClockTest {
     }
 
     @Test
-    public void should_display_all_5hr_lights_on() {
+    public void
+    display_second_off() {
+        assertEquals("Second should be displayed"
+                , ( NEW_LINE + "                 * *" + NEW_LINE +
+                        "               *     *" + NEW_LINE +
+                        "             *    "+" "+"    *" + NEW_LINE +
+                        "               *     *" + NEW_LINE +
+                        "                 * *")
+                ,new BerlinClock().buildBoxForSecondDisplay(Boolean.FALSE).toString());
+    }
+
+    @Test
+    public void
+    display_all_5hr_lights_on() {
         assertEquals("All four 5hr lights should be ON."
                 , ( NEW_LINE +
                     "╔═══════╗╔═══════╗╔═══════╗╔═══════╗" + NEW_LINE +
                     "║   R   ║║   R   ║║   R   ║║   R   ║" + NEW_LINE +
                     "╚═══════╝╚═══════╝╚═══════╝╚═══════╝")
-                ,new BerlinClock().buildBoxesForFourBoxDisplay(Boolean.TRUE
-                ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}).toString());
+                ,new BerlinClock().buildBoxesForFourBoxDisplay(new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}, Boolean.TRUE
+                ).toString());
     }
 
     @Test
-    public void should_display_all_1hr_lights_on() {
+    public void
+    display_all_1hr_lights_on() {
         assertEquals("All four 1hr lights should be ON."
                 , ( NEW_LINE +
                     "╔═══════╗╔═══════╗╔═══════╗╔═══════╗" + NEW_LINE +
                     "║   R   ║║   R   ║║   R   ║║   R   ║" + NEW_LINE +
                     "╚═══════╝╚═══════╝╚═══════╝╚═══════╝")
-                ,new BerlinClock().buildBoxesForFourBoxDisplay(Boolean.TRUE
-                ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}).toString());
+                ,new BerlinClock().buildBoxesForFourBoxDisplay(new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}, Boolean.TRUE
+                ).toString());
     }
 
     @Test
-    public void should_display_all_5min_lights_on() {
+    public void
+    display_all_5min_lights_on() {
         assertEquals("All four 5min lights should be ON."
                 , ( NEW_LINE +
                     "╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗╔═╗ ╔═╗╔═╗" + NEW_LINE +
@@ -205,42 +226,25 @@ public class BerlinClockTest {
     }
 
     @Test
-    public void should_display_all_1min_lights_on() {
+    public void
+    display_all_1min_lights_on() {
         assertEquals("All four 1hr lights should be ON."
                 , ( NEW_LINE +
                     "╔═══════╗╔═══════╗╔═══════╗╔═══════╗" + NEW_LINE +
                     "║   Y   ║║   Y   ║║   Y   ║║   Y   ║" + NEW_LINE +
                     "╚═══════╝╚═══════╝╚═══════╝╚═══════╝")
-                ,new BerlinClock().buildBoxesForFourBoxDisplay(Boolean.FALSE
-                        ,new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}).toString());
+                ,new BerlinClock().buildBoxesForFourBoxDisplay(new boolean[] {Boolean.TRUE,Boolean.TRUE,Boolean.TRUE,Boolean.TRUE}, Boolean.FALSE
+                ).toString());
     }
 
     @Test
-    public void should_display_on_console() {
+    public void
+    display_200000_on_console() {
         BerlinClock b = new BerlinClock("20:00:00");
-        b.setLampOnIndicators();
-        b.displayInConsole();
+        StringBuffer console = new StringBuffer();
+        b.display(console);
+        System.out.println(console.toString());
     }
 
-    @Test
-    public void should_display_in_window() {
-        BerlinClock b = new BerlinClock("20:00:00");
-        try {
-            b.setWindowDisplayInMilliSeconds(500);
-            b.displayInWindow();
-        } catch ( InterruptedException ex ) {
-            ex.printStackTrace();
-        }
-    }
 
-    @Test
-    public void should_display_in_pane() {
-        BerlinClock b = new BerlinClock("24:00:00");
-        try {
-            b.setWindowDisplayInMilliSeconds(5000);
-            b.displayInWindowWithColouring();
-        } catch ( InterruptedException ex ) {
-            ex.printStackTrace();
-        }
-    }
 }
