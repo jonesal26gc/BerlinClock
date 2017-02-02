@@ -14,14 +14,12 @@ public class BerlinClockPerpetualApp {
     }
 
     private static BerlinClockPerpetualParameters createBerlinClockPerpetualParameters(String[] args) {
-        if (args.length > 0) {
-            try {
-                return new BerlinClockPerpetualParameters(args);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+        try {
+            return new BerlinClockPerpetualParameters(args);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        return new BerlinClockPerpetualParameters();
+        return null;
     }
 
     private static void run(BerlinClockPerpetualParameters berlinClockPerpetualParameters) {
