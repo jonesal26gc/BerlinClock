@@ -1,5 +1,8 @@
 package BerlinClock;
 
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+
 import static java.lang.Thread.sleep;
 
 public class BerlinClockPerpetualApp {
@@ -10,6 +13,10 @@ public class BerlinClockPerpetualApp {
      *********************************************************************************/
 
     public static void main(String[] args) throws Exception {
+
+        PrintStream consoleMessages = new PrintStream(new FileOutputStream("d:\\BerlinClockLog.txt"));
+        System.setOut(consoleMessages);
+
         run(new BerlinClockPerpetualParameters(args));
     }
 
