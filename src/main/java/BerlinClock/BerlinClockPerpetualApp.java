@@ -14,7 +14,7 @@ public class BerlinClockPerpetualApp {
 
     public static void main(String[] args) throws Exception {
 
-        PrintStream consoleMessages = new PrintStream(new FileOutputStream("d:\\BerlinClockLog.txt"));
+        PrintStream consoleMessages = new PrintStream(new FileOutputStream("BerlinClockPerpetualApp.Log"));
         System.setOut(consoleMessages);
 
         run(new BerlinClockPerpetualParameters(args));
