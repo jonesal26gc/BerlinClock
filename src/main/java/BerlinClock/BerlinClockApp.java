@@ -9,12 +9,12 @@ public class BerlinClockApp {
         berlinClock.display(console);
         System.out.println(console.toString());
 
-        try {
-            BerlinClockWindowDisplay.displayWithLetters(berlinClock.getParameterTime(),console);
-            BerlinClockWindowDisplay.displayWithColour(berlinClock.getParameterTime(),console);
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
-        }
+//        try {
+//            BerlinClockWindowDisplay.displayWithLetters(berlinClock.getParameterTime(),console);
+//            BerlinClockWindowDisplay.displayWithColour(berlinClock.getParameterTime(),console);
+//        } catch (InterruptedException ex) {
+//            ex.printStackTrace();
+//        }
     }
 
     private static BerlinClock createBerlinClock(String[] args) {
