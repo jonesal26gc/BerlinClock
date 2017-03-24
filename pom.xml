@@ -40,6 +40,11 @@
                         <include>**/*Test.java</include>
                         <include>**/*Should.java</include>
                     </includes>
+                    <excludes>
+                        <exclude>BerlinClockPerpetualAppShould</exclude>
+                        <exclude>BerlinClockWindowDisplayShould</exclude>
+                    </excludes>
+
                 </configuration>
             </plugin>
 
